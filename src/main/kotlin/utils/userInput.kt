@@ -35,7 +35,7 @@ fun readNextFloat(prompt: String?): Float {
     }while (true)
 }
 
-fun readNextLine(prompt: String?): String {
+fun readNextLine(prompt: String): String {
     print(prompt)
     try {
         print(prompt)
