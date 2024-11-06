@@ -73,3 +73,61 @@ fun runMenu() {
 fun addStudent() {
 
 }
+
+fun listAllStudents() {
+
+}
+fun listStudentByName() {
+
+}
+
+fun listStudentbyNumber() {
+
+}
+
+fun updateStudentDetails() {
+
+}
+fun numberOfStudents() {
+
+}
+
+fun deleteStudent() {
+
+}
+
+fun addCourse() {
+
+}
+
+fun addStudentToCourse() {
+
+}
+
+fun listAllCourses() {
+
+}
+
+fun listCourseById() {
+
+}
+
+fun updateCourseDetails() {
+
+}
+
+fun closeCourse() {
+
+}
+
+fun save() {
+
+}
+
+fun load() {
+
+}
+
+fun exit() {
+
+}

@@ -30,13 +30,15 @@ class studentAPI(serializerType: serializer) {
         }
 
     fun listEnrolledStudents(): String {
-        if (numberOfEnrolledStudents() == 0) "No enrolled students are in the system"
+        return if (numberOfEnrolledStudents() == 0) "No enrolled students are in the system"
         else students.filter{Student -> !Student.isNotEnrolled}
             .joinToString(separator = "\n") {Student -> students.indexOf(Student).toString() + ": " + Student.toString()}
     }
 
     fun listNotEnrolledStudents(): String {
-        
+       return if (numberOfNotEnrolledStudents() == 0) "Every student is enrolled in the system"
+        else students.filter{Student -> !Student.isEnrolled}
+            .joinToString(separator = "\n") {Student -> students.indexOf(Student).toString() + ": " + Student.toString()}
     }
 
     fun listStudentByName(searchString: String) = students.filter {Student -> Student.firstName.contains(searchString, true)}
