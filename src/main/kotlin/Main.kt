@@ -3,14 +3,14 @@ import controllers.studentAPI
 import controllers.courseAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import persistence.JSONSerializer
-import persistence.XMLSerializer
-import utils.*
+import utils.readNextInt
 import java.io.File
 
 private val logger = KotlinLogging.logger{}
 //private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
 private val noteAPI = studentAPI(JSONSerializer(File("student.json")))
 //declaration of global variables which exist in main.
+private val courseAPI = courseAPI(JSONSerializer(File("course.json")))
 
 fun main() {
     runMenu()
