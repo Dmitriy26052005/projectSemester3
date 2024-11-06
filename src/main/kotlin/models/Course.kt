@@ -1,6 +1,6 @@
 package models
 
-data class course(var courseId: Int,
+data class Course(var courseId: Int,
              var amountOfStudents: Int,
              var isCourseOpen: Boolean,
              var isCourseClosed: Boolean,

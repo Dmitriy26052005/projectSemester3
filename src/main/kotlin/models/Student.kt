@@ -1,6 +1,6 @@
 package models
 
-data class student( var studentNo: Int,
+data class Student( var studentNo: Int,
                     var  firstName: String,
                     var lastName: String,
                     var dateOfBirth: String,
