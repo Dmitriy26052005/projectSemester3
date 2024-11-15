@@ -2,7 +2,6 @@ package controllers
 
 import models.Student
 import persistence.serializer
-import utils.*
 
 class studentAPI(serializerType: serializer) {
     private var students = ArrayList<Student>()
@@ -17,18 +16,13 @@ class studentAPI(serializerType: serializer) {
     fun store() {
         serializer.write(students)
     }
-
-    fun addStudent(student: Student): Boolean {
+    fun add(student: Student): Boolean {
         return students.add(student)
     }
+    fun listAllStudents(): String =
+        if (students.isEmpty()) "No students in the system"
+        else students.joinToString(separator = "\n") { Student -> students.indexOf(Student).toString() + ": " + Student.toString()
 
-    fun listAllStudents(): String {
-        return if (students.isNotEmpty()) students.joinToString(separator = "\n") { Student ->
-            students.indexOf(Student).toString() + ": " + Student.toString()
-        }
-        else {
-            return "No students in the system"
-        }
     }
 
     fun listEnrolledStudents(): String {
@@ -58,16 +52,20 @@ class studentAPI(serializerType: serializer) {
             students.indexOf(Student).toString() + ": " + Student.toString()
         }
 
-    fun numberOfEnrolledStudents(): Int? {
+    fun numberOfEnrolledStudents(): Int {
         return students.stream().filter { Student: Student -> !Student.isEnrolled }
             .count()
             .toInt()
     }
 
-    fun numberOfNotEnrolledStudents(): Int? {
+    fun numberOfNotEnrolledStudents(): Int {
         return students.stream().filter { Student: Student -> !Student.isNotEnrolled }
             .count()
             .toInt()
+    }
+
+    fun numberOfStudents(): Int {
+        return students.size
     }
 
     fun updateStudent(indexToUpdate: Int, Student: Student?): Boolean {
@@ -98,6 +96,16 @@ class studentAPI(serializerType: serializer) {
             val studentToEnroll = students[indexToEnroll]
             if (!studentToEnroll.isEnrolled) {
                 studentToEnroll.isEnrolled = true
+            }
+        }
+        return false
+    }
+
+    fun disenrollStudent(indexToDisenroll: Int): Boolean {
+        if (isValidIndex(indexToDisenroll)) {
+            val studentToDisenroll = students[indexToDisenroll]
+            if (!studentToDisenroll.isNotEnrolled) {
+                studentToDisenroll.isNotEnrolled = true
             }
         }
         return false

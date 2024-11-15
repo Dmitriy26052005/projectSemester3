@@ -1,16 +1,18 @@
 
-import controllers.studentAPI
 import controllers.courseAPI
+import controllers.studentAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
+import models.Student
 import persistence.JSONSerializer
-import persistence.XMLSerializer
-import utils.*
+import utils.readNextInt
+import utils.readNextLine
 import java.io.File
 
 private val logger = KotlinLogging.logger{}
 //private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
-private val noteAPI = studentAPI(JSONSerializer(File("student.json")))
+private val studentAPI = studentAPI(JSONSerializer(File("students.json")))
 //declaration of global variables which exist in main.
+private val courseAPI = courseAPI(JSONSerializer(File("course.json")))
 
 fun main() {
     runMenu()
@@ -49,53 +51,148 @@ fun runMenu() {
     do {
         val option = readNextInt(">--->")
         when (option) {
-          1 -> addStudent()
-          2 -> listAllStudents()
-          3 -> listStudentByName()
-          4 -> listStudentbyNumber()
-          5 -> updateStudentDetails()
-          6 -> numberOfStudents()
-          7 -> deleteStudent()
-          8 -> addCourse()
-          9 -> addStudentToCourse()
-          10 -> listAllCourses()
-          11 -> listCourseById()
-          12 -> updateCourseDetails()
-          13 -> closeCourse()
-          14 -> save()
-          15 -> load()
-          16 -> exit()
-          else -> """Please enter a valid option:
+            1 -> addStudent()
+            2 -> listStudent()
+            3 -> listStudentByName()
+            4 -> listStudentByNumber()
+            5 -> enrollStudent()
+            6 -> disenrollStudent()
+            7 -> updateStudentDetails()
+            8 -> numberOfStudents()
+            9 -> deleteStudent()
+            10 -> addCourse()
+            11 -> addStudentToCourse()
+            12 -> listAllCourses()
+            13 -> listCourseById()
+            14 -> updateCourseDetails()
+            15 -> closeCourse()
+            16 -> save()
+            17 -> load()
+            18 -> exit()
+            else -> """Please enter a valid option:
                      ${option} is invalid.
           """.trimMargin()
         }
-    } while(true)
+    } while (true)
+}
+fun addStudent() {
+    val studentNo = readNextInt("Please enter a Student Number")
+    val fName = readNextLine("Please enter the Student's First Name")
+    val lName = readNextLine("Please enter the Student's Last Name")
+    val dob = readNextLine("Please enter the Student's Date of Birth")
+    val isAdded = studentAPI.add(Student(studentNo, fName, lName, dob, false, false, 0.0))
+
+    if (isAdded) {
+        println("Student added to the system!")
+    }
+
+    else {
+        println("Unsuccessful")
+    }
 }
 
-fun addStudent() {
+fun listStudent() {
+    if (studentAPI.numberOfStudents() > 0) {
+        val option = readNextInt(
+            """
+                >
+                > 1 -> View All Students
+                > 2 -> View Enrolled Students
+                > 3 -> View Not Enrolled Students
+            """.trimMargin(">"))
 
+        when (option) {
+            1 -> listAllStudents();
+            2 -> listEnrolledStudents();
+            3 -> listNotEnrolledStudents();
+            else -> println("$option: is invalid")
+        }
+    } else {
+        println("Invalid option entered - No Students to display")
+    }
 }
 
 fun listAllStudents() {
+println(studentAPI.listAllStudents())
+}
 
+fun listEnrolledStudents() {
+    println(studentAPI.listEnrolledStudents())
+}
+
+fun listNotEnrolledStudents() {
+    println(studentAPI.listNotEnrolledStudents())
 }
 fun listStudentByName() {
 
+    val searchName = readNextLine("Please enter the first name of the student: ")
+    val searchResults = studentAPI.listStudentByName(searchName)
+    if (searchResults.isEmpty())
+    {
+        println("No students found")
+    } else {
+        println(searchResults)
+    }
 }
 
-fun listStudentbyNumber() {
+fun listStudentByNumber() {
 
+    val searchNumber = readNextInt("Please enter the student number to search: ")
+    val searchResults = studentAPI.listStudentByNumber(searchNumber)
+    if (searchResults.isEmpty())
+    {
+        println("No students found with this ID")
+    }
+    else {
+      println(searchResults)
+    }
+}
+
+fun enrollStudent() {
+    println(studentAPI.enrollStudent(indexToEnroll = readNextInt("Please enter the Student index to enrol")))
+}
+
+fun disenrollStudent() {
+    println(studentAPI.disenrollStudent(indexToDisenroll = readNextInt("Please enter the Student index to disenrol")))
 }
 
 fun updateStudentDetails() {
+listAllStudents()
+    if(studentAPI.numberOfStudents() > 0) {
+        val indexToUpdate = readNextInt("Enter the index of a student to edit: ")
+        if (studentAPI.isValidIndex(indexToUpdate)) {
+            val studentNo = readNextInt("Please enter a Student Number")
+            val fName = readNextLine("Please enter the Student's First Name")
+            val lName = readNextLine("Please enter the Student's Last Name")
+            val dob = readNextLine("Please enter the Student's Date of Birth")
 
+            if (studentAPI.updateStudent(indexToUpdate, Student(studentNo, fName, lName, dob, false, false, 0.0))) {
+                println("Update Successfully Executed")
+            } else {
+                println("Update Failed")
+            }
+        } else {
+            println("There is no student under this index.")
+        }
+    }
 }
 fun numberOfStudents() {
-
+"""${studentAPI.numberOfStudents()}
+    > Are in the system
+""".trimMargin(">")
 }
 
 fun deleteStudent() {
-
+listAllStudents()
+    if(studentAPI.numberOfStudents() > 0) {
+        val indexToDelete = readNextInt("Enter the index of a Student Number")
+        val studentToDelete = studentAPI.deleteStudent(indexToDelete)
+        if (studentToDelete != null) {
+            println("Student successfully deleted from the system. Deleted student: ${studentToDelete.studentNo}")
+        } else {
+            println("Delete Unsuccessful")
+        }
+    }
 }
 
 fun addCourse() {
@@ -123,13 +220,22 @@ fun closeCourse() {
 }
 
 fun save() {
-
+try{
+    studentAPI.store()
+    courseAPI.store()
+} catch (e: Exception) {
+    System.err.println("Error while saving student: ${e.message}")
+}
 }
 
 fun load() {
-
+    try{
+        studentAPI.load()
+        courseAPI.load()
+    } catch (e: Exception) {
+        System.err.println("Error while saving student: ${e.message}")
+    }
 }
-
 fun exit() {
-
+    exit()
 }
