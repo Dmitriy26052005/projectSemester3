@@ -41,8 +41,7 @@ class studentAPI(serializerType: serializer) {
             }
     }
 
-    fun listStudentByName(searchString: String) =
-        students.filter { Student -> Student.firstName.contains(searchString, true) }
+    fun listStudentByName(searchString: String) = students.filter { Student -> Student.firstName.contains(searchString, true) }
             .joinToString(separator = "\n") { Student ->
                 students.indexOf(Student).toString() + ": " + Student.toString()
             }
@@ -111,17 +110,16 @@ class studentAPI(serializerType: serializer) {
         return false
     }
 
+    fun deleteStudent(indexToDelete: Int): Student? {
+        return if (isValidListIndex(indexToDelete, students)) {
+            students.removeAt(indexToDelete)
+        } else null
+    }
     private fun isValidListIndex(index: Int, list: List<Student>): Boolean {
         return (index >= 0 && index < list.size)
     }
 
     fun isValidIndex(index: Int): Boolean {
         return isValidListIndex(index, students);
-    }
-
-    fun deleteStudent(indexToDelete: Int): Student? {
-        return if (isValidListIndex(indexToDelete, students)) {
-            students.removeAt(indexToDelete)
-        } else null
     }
 }

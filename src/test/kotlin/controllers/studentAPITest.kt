@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import persistence.XMLSerializer
 import java.io.File
+import kotlin.test.assertFalse
 
 class studentAPITest {
     private var firstYearStudent: Student? = null
@@ -21,11 +22,11 @@ class studentAPITest {
 
     @BeforeEach
     fun setup() {
-        firstYearStudent = Student(1, "John", "Doe", "01//02/2002", false, false, 26.00)
-        secondYearStudent = Student(2, "Jake", "Dune", "24//03/2001", false, false, 26.50)
-        thirdYearStudent = Student(3, "Jacob", "Dan", "31//05/2000", false, false, 25.00)
-        fourthYearStudent = Student(4, "Joanne", "Dooly", "03//11/2004", false, false, 30.00)
-        mastersStudent = Student(5, "Jett", "Dett", "05/08/2003", false, false, 35.00)
+        firstYearStudent = Student(1, "John", "Doe", "01//02/2002", true, false, 26.00)
+        secondYearStudent = Student(2, "Jake", "Dune", "24//03/2001", true, false, 26.50)
+        thirdYearStudent = Student(3, "Jacob", "Dan", "31//05/2000", true, false, 25.00)
+        fourthYearStudent = Student(4, "Joanne", "Dooly", "03//11/2004", false, true, 30.00)
+        mastersStudent = Student(5, "Jett", "Dett", "05/08/2003", false, true, 35.00)
 
         filledStudent!!.add(firstYearStudent!!)
         filledStudent!!.add(secondYearStudent!!)
@@ -85,4 +86,34 @@ class studentAPITest {
             assertTrue(studentString.contains("jett"))
         }
     }
+
+    @Nested
+    inner class listEnrolledStudents{
+        @Test
+        fun `listEnrolledStudents returns no enrolled students when ArrayList is empty`() {
+            assertEquals(0, noStudents!!.numberOfEnrolledStudents())
+            assertTrue(noStudents!!.listEnrolledStudents().lowercase().contains("no enrolled students"))
+        }
+
+        @Test
+        fun `listEnrolledStudents returns enrolled students when ArrayList has enrolled students stored`() {
+            assertEquals(3, filledStudent!!.numberOfEnrolledStudents())
+            val enrolledStudentString = filledStudent!!.listEnrolledStudents().lowercase()
+            assertTrue(enrolledStudentString.contains("john"))
+            assertTrue(enrolledStudentString.contains("jake"))
+            assertTrue(enrolledStudentString.contains("jacob"))
+            assertFalse(enrolledStudentString.contains("joanne"))
+            assertFalse(enrolledStudentString.contains("jett"))
+        }
+
+        @Test
+        fun `listNotEnrolledStudents returns no enrolled students when ArrayList is empty`() {
+            assertEquals(0, noStudents!!.numberOfNotEnrolledStudents())
+            assertTrue(noStudents!!.listNotEnrolledStudents().lowercase().contains("no enrolled students"))
+        }
+    }
+        @Test
+        fun `listNotEnrolledStudents returns disenrolled students when ArrayList has disenrolled students stored`(){
+            assertEquals(2, filledStudent!!.numberOfNotEnrolledStudents())
+        }
 }
