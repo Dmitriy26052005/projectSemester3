@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import persistence.XMLSerializer
 import java.io.File
@@ -44,38 +45,44 @@ class studentAPITest {
         noStudents = null
     }
 
-    @Test
-    fun `adding a student to a filled list of students, to an ArrayList`() {
-        val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, false, 24.00)
-        assertEquals(5, filledStudent!!.numberOfStudents())
-        assertTrue(filledStudent!!.add(newStudent))
-        assertEquals(6, filledStudent!!.numberOfStudents())
-        assertEquals(newStudent, filledStudent!!.findStudent(filledStudent!!.numberOfStudents() - 1))
+    @Nested
+    inner class AddStudents {
+        @Test
+        fun `adding a student to a filled list of students, to an ArrayList`() {
+            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, false, 24.00)
+            assertEquals(5, filledStudent!!.numberOfStudents())
+            assertTrue(filledStudent!!.add(newStudent))
+            assertEquals(6, filledStudent!!.numberOfStudents())
+            assertEquals(newStudent, filledStudent!!.findStudent(filledStudent!!.numberOfStudents() - 1))
+        }
+
+        @Test
+        fun `adding a Student to a clear list of students, adds to an ArrayList`() {
+            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, false, 24.00)
+            assertEquals(0, noStudents!!.numberOfStudents())
+            assertTrue(noStudents!!.add(newStudent))
+            assertEquals(1, noStudents!!.numberOfStudents())
+            assertEquals(newStudent, noStudents!!.findStudent(noStudents!!.numberOfStudents() - 1))
+        }
     }
 
-    @Test
-    fun `adding a Student to a clear list of students, adds to an ArrayList`() {
-        val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, false, 24.00)
-        assertEquals(0, noStudents!!.numberOfStudents())
-        assertTrue(noStudents!!.add(newStudent))
-        assertEquals(1, noStudents!!.numberOfStudents())
-        assertEquals(newStudent, noStudents!!.findStudent(noStudents!!.numberOfStudents() - 1))
-    }
+    @Nested
+    inner class listStudents {
+        @Test
+        fun `listAllStudents returns No Students stored message when ArrayList is empty`() {
+            assertEquals(0, noStudents!!.numberOfStudents())
+            assertTrue(noStudents!!.listAllStudents().lowercase().contains("no students"))
+        }
 
-    @Test
-    fun `listAllStudents returns No Students stored message when ArrayList is empty`() {
-        assertEquals(0, noStudents!!.numberOfStudents())
-        assertTrue(noStudents!!.listAllStudents().lowercase().contains("no students"))
-    }
-
-    @Test
-    fun `listAllStudents returns Students when ArrayList has students stored`() {
-        assertEquals(5, filledStudent!!.numberOfStudents())
-        val studentString = filledStudent!!.listAllStudents().lowercase()
-        assertTrue(studentString.contains("john"))
-        assertTrue(studentString.contains("jake"))
-        assertTrue(studentString.contains("jacob"))
-        assertTrue(studentString.contains("joanne"))
-        assertTrue(studentString.contains("jett"))
+        @Test
+        fun `listAllStudents returns Students when ArrayList has students stored`() {
+            assertEquals(5, filledStudent!!.numberOfStudents())
+            val studentString = filledStudent!!.listAllStudents().lowercase()
+            assertTrue(studentString.contains("john"))
+            assertTrue(studentString.contains("jake"))
+            assertTrue(studentString.contains("jacob"))
+            assertTrue(studentString.contains("joanne"))
+            assertTrue(studentString.contains("jett"))
+        }
     }
 }
