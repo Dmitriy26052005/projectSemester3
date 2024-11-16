@@ -2,6 +2,7 @@ package controllers
 
 import models.Student
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -44,13 +45,19 @@ fun setup(){
     @Test
     fun `adding a student to a filled list of students, to an ArrayList`(){
         val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, false, 24.00)
+        assertEquals(5, filledStudent!!.numberOfStudents())
         assertTrue(filledStudent!!.add(newStudent))
+        assertEquals(6, filledStudent!!.numberOfStudents())
+        assertEquals(newStudent, filledStudent!!.findStudent(filledStudent!!.numberOfStudents() - 1))
     }
 
     @Test
     fun `adding a Student to a clear list of students, adds to an ArrayList`(){
         val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, false, 24.00)
+        assertEquals(0, noStudents!!.numberOfStudents())
         assertTrue(noStudents!!.add(newStudent))
+        assertEquals(1, noStudents!!.numberOfStudents())
+        assertEquals(newStudent, noStudents!!.findStudent(noStudents!!.numberOfStudents() - 1))
     }
 }
 }
