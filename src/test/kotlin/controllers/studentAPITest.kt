@@ -59,5 +59,10 @@ fun setup(){
         assertEquals(1, noStudents!!.numberOfStudents())
         assertEquals(newStudent, noStudents!!.findStudent(noStudents!!.numberOfStudents() - 1))
     }
+
+    @Test
+    fun `listAllStudents returns No Students stored message when ArrayList is empty`(){}
+    assertEquals(0, noStudents!!.numberOfStudents())
+    assertTrue(noStudents!!.listAllStudents().lowercase().contains("no students"))
 }
 }
