@@ -1,4 +1,3 @@
-
 import controllers.courseAPI
 import controllers.studentAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
