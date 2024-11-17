@@ -27,7 +27,7 @@ class studentAPI(serializerType: serializer) {
 
     fun listEnrolledStudents(): String {
         return if (numberOfEnrolledStudents() == 0) "No enrolled students are in the system"
-        else students.filter { Student -> !Student.isNotEnrolled }
+        else students.filter { Student -> !Student.disenrolled }
             .joinToString(separator = "\n") { Student ->
                 students.indexOf(Student).toString() + ": " + Student.toString()
             }
@@ -41,28 +41,37 @@ class studentAPI(serializerType: serializer) {
             }
     }
 
-    fun listStudentByName(searchString: String) =
-        students.filter { Student -> Student.firstName.contains(searchString, true) }
-            .joinToString(separator = "\n") { Student ->
-                students.indexOf(Student).toString() + ": " + Student.toString()
-            }
+        fun listStudentByName(searchString: String): String {
 
-    fun listStudentByNumber(number: Int) = students.filter { Student -> Student.studentNo.equals(number) }
-        .joinToString(separator = "\n") { Student ->
-            students.indexOf(Student).toString() + ": " + Student.toString()
+            val filteredStudents = students.filter { Student -> Student.firstName.contains(searchString, true) }
+
+            return if (filteredStudents.isEmpty()) {
+                "No students of this Name"
+            } else {
+                students.filter { Student -> Student.firstName.contains(searchString, true) }
+                    .joinToString(separator = "\n") { Student ->
+                        students.indexOf(Student).toString() + ": " + Student.toString()
+                    }
+            }
         }
 
-    fun numberOfEnrolledStudents(): Int {
-        return students.stream().filter { Student: Student -> !Student.isEnrolled }
-            .count()
-            .toInt()
-    }
+    fun listStudentByNumber(number: Int): String {
 
-    fun numberOfNotEnrolledStudents(): Int {
-        return students.stream().filter { Student: Student -> !Student.isNotEnrolled }
-            .count()
-            .toInt()
-    }
+     val symmetryStudent = students.filter { it.studentNo == number}
+
+        return if (symmetryStudent.isEmpty()) {
+            "No students found with this ID"
+        } else {
+
+            students.filter { Student -> Student.studentNo.equals(number) }
+                .joinToString(separator = "\n") { Student ->
+                    students.indexOf(Student).toString() + ": " + Student.toString()
+                }
+        }
+        }
+    fun numberOfEnrolledStudents(): Int = students.count{ it.isEnrolled }
+
+    fun numberOfNotEnrolledStudents(): Int = students.count { !it.isEnrolled }
 
     fun numberOfStudents(): Int {
         return students.size
@@ -77,7 +86,7 @@ class studentAPI(serializerType: serializer) {
             foundStudent.firstName = Student.firstName
             foundStudent.lastName = Student.lastName
             foundStudent.isEnrolled = Student.isEnrolled
-            foundStudent.isNotEnrolled = Student.isNotEnrolled
+            foundStudent.disenrolled = Student.disenrolled
             foundStudent.courseHours = Student.courseHours
             foundStudent.dateOfBirth = Student.dateOfBirth
             return true
@@ -96,6 +105,7 @@ class studentAPI(serializerType: serializer) {
             val studentToEnroll = students[indexToEnroll]
             if (!studentToEnroll.isEnrolled) {
                 studentToEnroll.isEnrolled = true
+                return true
             }
         }
         return false
@@ -104,24 +114,24 @@ class studentAPI(serializerType: serializer) {
     fun disenrollStudent(indexToDisenroll: Int): Boolean {
         if (isValidIndex(indexToDisenroll)) {
             val studentToDisenroll = students[indexToDisenroll]
-            if (!studentToDisenroll.isNotEnrolled) {
-                studentToDisenroll.isNotEnrolled = true
+            if (!studentToDisenroll.disenrolled) {
+                studentToDisenroll.disenrolled = true
+                return true
             }
         }
         return false
-    }
-
-    private fun isValidListIndex(index: Int, list: List<Student>): Boolean {
-        return (index >= 0 && index < list.size)
-    }
-
-    fun isValidIndex(index: Int): Boolean {
-        return isValidListIndex(index, students);
     }
 
     fun deleteStudent(indexToDelete: Int): Student? {
         return if (isValidListIndex(indexToDelete, students)) {
             students.removeAt(indexToDelete)
         } else null
+    }
+    private fun isValidListIndex(index: Int, list: List<Student>): Boolean {
+        return (index >= 0 && index < list.size)
+    }
+
+    fun isValidIndex(index: Int): Boolean {
+        return isValidListIndex(index, students);
     }
 }
