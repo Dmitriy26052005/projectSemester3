@@ -41,9 +41,16 @@ class studentAPI(serializerType: serializer) {
             }
     }
 
-    fun listStudentByName(searchString: String) = students.filter { Student -> Student.firstName.contains(searchString, true) }
-            .joinToString(separator = "\n") { Student ->
-                students.indexOf(Student).toString() + ": " + Student.toString()
+        fun listStudentByName(searchString: String) =
+
+            if(students.isEmpty()) {
+                "No students of this Name"
+            }
+            else {
+                students.filter { Student -> Student.firstName.contains(searchString, true) }
+                    .joinToString(separator = "\n") { Student ->
+                        students.indexOf(Student).toString() + ": " + Student.toString()
+                    }
             }
 
     fun listStudentByNumber(number: Int) = students.filter { Student -> Student.studentNo.equals(number) }

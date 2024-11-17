@@ -109,7 +109,7 @@ class studentAPITest {
         @Test
         fun `listNotEnrolledStudents returns no enrolled students when ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfNotEnrolledStudents())
-            assertFalse(noStudents!!.listNotEnrolledStudents().lowercase().contains("no enrolled students"))
+            assertTrue(noStudents!!.listNotEnrolledStudents().contains("Every student is enrolled in the system"))
         }
     }
         @Test
@@ -128,7 +128,7 @@ class studentAPITest {
         @Test
         fun `listStudents by name returns no students when an ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfStudents())
-            assertTrue(noStudents!!.listStudentByName("jake").contains("no students"))
+            assertTrue(noStudents!!.listStudentByName("jake").contains("No students of this Name"))
         }
     }
 }
