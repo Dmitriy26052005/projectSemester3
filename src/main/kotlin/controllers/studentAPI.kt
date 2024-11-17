@@ -55,11 +55,20 @@ class studentAPI(serializerType: serializer) {
             }
         }
 
-    fun listStudentByNumber(number: Int) = students.filter { Student -> Student.studentNo.equals(number) }
-        .joinToString(separator = "\n") { Student ->
-            students.indexOf(Student).toString() + ": " + Student.toString()
-        }
+    fun listStudentByNumber(number: Int): String {
 
+     val symmetryStudent = students.filter { it.studentNo == number}
+
+        return if (symmetryStudent.isEmpty()) {
+            "No students found with this ID"
+        } else {
+
+            students.filter { Student -> Student.studentNo.equals(number) }
+                .joinToString(separator = "\n") { Student ->
+                    students.indexOf(Student).toString() + ": " + Student.toString()
+                }
+        }
+        }
     fun numberOfEnrolledStudents(): Int = students.count{ it.isEnrolled }
 
     fun numberOfNotEnrolledStudents(): Int = students.count { !it.isEnrolled }

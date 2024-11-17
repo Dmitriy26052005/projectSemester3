@@ -153,6 +153,37 @@ class studentAPITest {
     }
 
     @Nested
+    inner class listStudentByNumber {
+
+        @Test
+        fun `listStudentByNumber returns no students when an ArrayList is empty`() {
+            assertEquals(0, noStudents!!.numberOfStudents())
+            assertTrue(noStudents!!.listStudentByNumber(2).contains("No students found with this ID"))
+        }
+
+        @Test
+        fun `listStudentByNumber returns no students when the ArrayList doesn't contain the same number`() {
+            assertEquals(5, filledStudent!!.numberOfStudents())
+            val numString = filledStudent!!.listStudentByNumber(9)
+            assertTrue(numString.contains("No students found with this ID"))
+        }
+
+        @Test
+        fun `listStudentByNumber returns all students with the equal number when students exist with that ID`() {
+            assertEquals(5, filledStudent!!.numberOfStudents())
+
+            val num0String = filledStudent!!.listStudentByNumber(1)
+            assertTrue(num0String.contains("John"))
+            assertTrue(num0String.contains("Doe"))
+
+            val num2String = filledStudent!!.listStudentByNumber(3)
+            assertTrue(num2String.contains("Jacob"))
+            assertTrue(num2String.contains("Dan"))
+        }
+    }
+
+
+    @Nested
     inner class updateStudent {
 
         @Test
