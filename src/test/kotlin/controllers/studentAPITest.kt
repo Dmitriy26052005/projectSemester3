@@ -157,10 +157,33 @@ class studentAPITest {
 
         @Test
         fun `updating a student that doesn't exist returns a false result`() {
-            assertFalse(filledStudent!!.updateStudent(7, Student(443, "Jamie", "Johnson", "23/04/2001", true, true, 30.00)))
-            assertFalse(filledStudent!!.updateStudent(-1, Student(222, "Jordan", "Peele", "22/0/1/2015", false, true, 20.00)))
+            assertFalse(
+                filledStudent!!.updateStudent(
+                    7,
+                    Student(443, "Jamie", "Johnson", "23/04/2001", true, true, 30.00)
+                )
+            )
+            assertFalse(
+                filledStudent!!.updateStudent(
+                    -1,
+                    Student(222, "Jordan", "Peele", "22/0/1/2015", false, true, 20.00)
+                )
+            )
             assertFalse(noStudents!!.updateStudent(0, Student(10, "JB", "Keene", "14/06/2000", true, false, 30.00)))
+        }
 
+        @Test
+        fun `updating a student that exists, returns true, and updates`() {
+
+            assertEquals(thirdYearStudent, filledStudent!!.findStudent(2))
+            assertEquals(3, filledStudent!!.findStudent(2)!!.studentNo)
+            assertEquals("Jacob", filledStudent!!.findStudent(2)!!.firstName)
+            assertEquals("Dan", filledStudent!!.findStudent(2)!!.lastName)
+
+            assertTrue(filledStudent!!.updateStudent(3, Student(33, "Jakob", "Daniels", "31/05/1999", true, false, 26.50)))
+            assertEquals("Jakob", filledStudent!!.findStudent(3)!!.firstName)
+            assertEquals(true, filledStudent!!.findStudent(3)!!.isEnrolled)
+            assertEquals(26.50, filledStudent!!.findStudent(3)!!.courseHours)
         }
     }
 }
