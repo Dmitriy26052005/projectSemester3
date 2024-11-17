@@ -253,4 +253,17 @@ class studentAPITest {
         assertFalse(filledStudent!!.enrollStudent(-1))
         assertFalse(noStudents!!.enrollStudent(0))
     }
+
+    @Test
+    fun `enrolling an already enrolled student returns false`() {
+        assertTrue(filledStudent!!.findStudent(0)!!.isEnrolled)
+        assertFalse(filledStudent!!.enrollStudent(0))
+    }
+
+    @Test
+    fun `enrolling a disenrolled student that is present returns true and enrolls`() {
+        assertFalse(filledStudent!!.findStudent(3)!!.isEnrolled)
+        assertTrue(filledStudent!!.enrollStudent(3))
+        assertTrue(filledStudent!!.findStudent(3)!!.isEnrolled)
+    }
 }

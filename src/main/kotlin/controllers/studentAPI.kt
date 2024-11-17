@@ -96,6 +96,7 @@ class studentAPI(serializerType: serializer) {
             val studentToEnroll = students[indexToEnroll]
             if (!studentToEnroll.isEnrolled) {
                 studentToEnroll.isEnrolled = true
+                return true
             }
         }
         return false
