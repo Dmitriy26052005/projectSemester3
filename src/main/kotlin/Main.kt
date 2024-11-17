@@ -148,12 +148,33 @@ fun listStudentByNumber() {
 }
 
 fun enrollStudent() {
-    println(studentAPI.enrollStudent(indexToEnroll = readNextInt("Please enter the Student index to enrol")))
+    listAllStudents()
+    if (studentAPI.numberOfStudents() > 0) {
+
+        val indexToEnroll = readNextInt("Enter the index of the student you want to enrol: ")
+
+        if (studentAPI.enrollStudent(indexToEnroll)) {
+            println("Student successfully enrolled")
+        } else {
+            println("Enrollment unsuccessful")
+        }
+    }
 }
 
 fun disenrollStudent() {
-    println(studentAPI.disenrollStudent(indexToDisenroll = readNextInt("Please enter the Student index to disenrol")))
+    listEnrolledStudents()
+    if (studentAPI.numberOfEnrolledStudents() > 0) {
+
+  val indexToDisenroll = readNextInt("Enter the index of the student to disenroll: ")
+
+        if(studentAPI.disenrollStudent(indexToDisenroll)) {
+        println("Student successfully disrolled")
+        } else{
+            println("Disrollment unsuccessful")
+        }
+    }
 }
+
 
 fun updateStudentDetails() {
 listAllStudents()

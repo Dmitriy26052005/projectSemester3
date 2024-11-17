@@ -243,4 +243,14 @@ class studentAPITest {
 
         }
     }
+
+    @Nested
+    inner class EnrollStudents
+
+    @Test
+    fun `enrolling a student thst does not exist returns false`() {
+        assertFalse(filledStudent!!.enrollStudent(10))
+        assertFalse(filledStudent!!.enrollStudent(-1))
+        assertFalse(noStudents!!.enrollStudent(0))
+    }
 }
