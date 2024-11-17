@@ -22,10 +22,10 @@ class studentAPITest {
 
     @BeforeEach
     fun setup() {
-        firstYearStudent = Student(1, "John", "Doe", "01//02/2002", true, false, 26.00)
-        secondYearStudent = Student(2, "Jake", "Dune", "24//03/2001", true, false, 26.50)
-        thirdYearStudent = Student(3, "Jacob", "Dan", "31//05/2000", true, false, 25.00)
-        fourthYearStudent = Student(4, "Joanne", "Dooly", "03//11/2004", false, true, 30.00)
+        firstYearStudent = Student(1, "John", "Doe", "01/02/2002", true, false, 26.00)
+        secondYearStudent = Student(2, "Jake", "Dune", "24/03/2001", true, false, 26.50)
+        thirdYearStudent = Student(3, "Jacob", "Dan", "31/05/2000", true, false, 25.00)
+        fourthYearStudent = Student(4, "Joanne", "Dooly", "03/11/2004", false, true, 30.00)
         mastersStudent = Student(5, "Jett", "Dett", "05/08/2003", false, true, 35.00)
 
         filledStudent!!.add(firstYearStudent!!)
@@ -136,6 +136,31 @@ class studentAPITest {
             assertEquals(5, filledStudent!!.numberOfStudents())
             val nameString = filledStudent!!.listStudentByName("joel")
             assertTrue(nameString.contains("No students of this Name"))
+        }
+    }
+
+    @Test
+    fun `listStudentsByName returns all students that match the name when students with that name exist`() {
+        assertEquals(5, filledStudent!!.numberOfStudents())
+
+        val nameJohnString = filledStudent!!.listStudentByName("john").lowercase()
+        assertTrue(nameJohnString.contains("doe"))
+        assertTrue(nameJohnString.contains("01/02/2002"))
+
+        val nameJakeString = filledStudent!!.listStudentByName("jake").lowercase()
+        assertTrue(nameJakeString.contains("dune"))
+        assertTrue(nameJakeString.contains("24/03/2001"))
+    }
+
+    @Nested
+    inner class updateStudent {
+
+        @Test
+        fun `updating a student that doesn't exist returns a false result`() {
+            assertFalse(filledStudent!!.updateStudent(7, Student(443, "Jamie", "Johnson", "23/04/2001", true, true, 30.00)))
+            assertFalse(filledStudent!!.updateStudent(-1, Student(222, "Jordan", "Peele", "22/0/1/2015", false, true, 20.00)))
+            assertFalse(noStudents!!.updateStudent(0, Student(10, "JB", "Keene", "14/06/2000", true, false, 30.00)))
+
         }
     }
 }
