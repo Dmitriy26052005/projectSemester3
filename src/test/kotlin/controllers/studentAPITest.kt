@@ -2,8 +2,7 @@ package controllers
 
 import models.Student
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -185,5 +184,24 @@ class studentAPITest {
             assertEquals(true, filledStudent!!.findStudent(3)!!.isEnrolled)
             assertEquals(26.50, filledStudent!!.findStudent(3)!!.courseHours)
         }
+    }
+
+    @Nested
+    inner class deleteStudent
+
+    @Test
+    fun `deleting a student that doesn't exist, returns null`() {
+        assertNull(noStudents!!.deleteStudent(0))
+        assertNull(filledStudent!!.deleteStudent(-1))
+        assertNull(filledStudent!!.deleteStudent(6))
+    }
+
+    @Test
+    fun `deleting a student that exists, is deleted`() {
+        assertEquals(5, filledStudent!!.numberOfStudents())
+        assertEquals(secondYearStudent, filledStudent!!.deleteStudent(1))
+        assertEquals(4, filledStudent!!.numberOfStudents())
+        assertEquals(mastersStudent, filledStudent!!.deleteStudent(3))
+        assertEquals(3, filledStudent!!.numberOfStudents())
     }
 }
