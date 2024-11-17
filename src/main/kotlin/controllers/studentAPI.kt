@@ -41,17 +41,18 @@ class studentAPI(serializerType: serializer) {
             }
     }
 
-        fun listStudentByName(searchString: String) =
+        fun listStudentByName(searchString: String): String {
 
-            if(students.isEmpty()) {
+            val filteredStudents = students.filter { Student -> Student.firstName.contains(searchString, true) }
+            return if (filteredStudents.isEmpty()) {
                 "No students of this Name"
-            }
-            else {
+            } else {
                 students.filter { Student -> Student.firstName.contains(searchString, true) }
                     .joinToString(separator = "\n") { Student ->
                         students.indexOf(Student).toString() + ": " + Student.toString()
                     }
             }
+        }
 
     fun listStudentByNumber(number: Int) = students.filter { Student -> Student.studentNo.equals(number) }
         .joinToString(separator = "\n") { Student ->

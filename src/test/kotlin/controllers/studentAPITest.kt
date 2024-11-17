@@ -126,9 +126,16 @@ class studentAPITest {
     @Nested
     inner class listStudentByName{
         @Test
-        fun `listStudents by name returns no students when an ArrayList is empty`() {
+        fun `listStudentsByName returns no students when an ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfStudents())
             assertTrue(noStudents!!.listStudentByName("jake").contains("No students of this Name"))
+        }
+
+        @Test
+        fun `listStudentsByName returns no students when the ArrayList doesn't contain equal names`() {
+            assertEquals(5, filledStudent!!.numberOfStudents())
+            val nameString = filledStudent!!.listStudentByName("joel")
+            assertTrue(nameString.contains("No students of this Name"))
         }
     }
 }
