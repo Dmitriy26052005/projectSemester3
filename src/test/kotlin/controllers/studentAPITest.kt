@@ -87,7 +87,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class listEnrolledStudents{
+    inner class listEnrolledStudents {
         @Test
         fun `listEnrolledStudents returns no enrolled students when ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfEnrolledStudents())
@@ -111,19 +111,20 @@ class studentAPITest {
             assertTrue(noStudents!!.listNotEnrolledStudents().contains("Every student is enrolled in the system"))
         }
     }
-        @Test
-        fun `listNotEnrolledStudents returns disenrolled students when ArrayList has disenrolled students stored`(){
-            assertEquals(2, filledStudent!!.numberOfNotEnrolledStudents())
-            val notEnrolledStudentString = filledStudent!!.listNotEnrolledStudents().lowercase()
-            assertFalse(notEnrolledStudentString.contains("john"))
-            assertFalse(notEnrolledStudentString.contains("jake"))
-            assertFalse(notEnrolledStudentString.contains("jacob"))
-            assertTrue(notEnrolledStudentString.contains("joanne"))
-            assertTrue(notEnrolledStudentString.contains("jett"))
-        }
+
+    @Test
+    fun `listNotEnrolledStudents returns disenrolled students when ArrayList has disenrolled students stored`() {
+        assertEquals(2, filledStudent!!.numberOfNotEnrolledStudents())
+        val notEnrolledStudentString = filledStudent!!.listNotEnrolledStudents().lowercase()
+        assertFalse(notEnrolledStudentString.contains("john"))
+        assertFalse(notEnrolledStudentString.contains("jake"))
+        assertFalse(notEnrolledStudentString.contains("jacob"))
+        assertTrue(notEnrolledStudentString.contains("joanne"))
+        assertTrue(notEnrolledStudentString.contains("jett"))
+    }
 
     @Nested
-    inner class listStudentByName{
+    inner class listStudentByName {
         @Test
         fun `listStudentsByName returns no students when an ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfStudents())
@@ -179,7 +180,12 @@ class studentAPITest {
             assertEquals("Jacob", filledStudent!!.findStudent(2)!!.firstName)
             assertEquals("Dan", filledStudent!!.findStudent(2)!!.lastName)
 
-            assertTrue(filledStudent!!.updateStudent(3, Student(33, "Jakob", "Daniels", "31/05/1999", true, false, 26.50)))
+            assertTrue(
+                filledStudent!!.updateStudent(
+                    3,
+                    Student(33, "Jakob", "Daniels", "31/05/1999", true, false, 26.50)
+                )
+            )
             assertEquals("Jakob", filledStudent!!.findStudent(3)!!.firstName)
             assertEquals(true, filledStudent!!.findStudent(3)!!.isEnrolled)
             assertEquals(26.50, filledStudent!!.findStudent(3)!!.courseHours)
@@ -248,7 +254,7 @@ class studentAPITest {
     inner class EnrollStudents
 
     @Test
-    fun `enrolling a student thst does not exist returns false`() {
+    fun `enrolling a student that does not exist returns false`() {
         assertFalse(filledStudent!!.enrollStudent(10))
         assertFalse(filledStudent!!.enrollStudent(-1))
         assertFalse(noStudents!!.enrollStudent(0))
@@ -265,5 +271,28 @@ class studentAPITest {
         assertFalse(filledStudent!!.findStudent(3)!!.isEnrolled)
         assertTrue(filledStudent!!.enrollStudent(3))
         assertTrue(filledStudent!!.findStudent(3)!!.isEnrolled)
+    }
+
+    @Nested
+    inner class disenrollStudents
+
+    @Test
+    fun `disenrolling a student that does not exist returns false`() {
+        assertFalse(filledStudent!!.disenrollStudent(10))
+        assertFalse(filledStudent!!.disenrollStudent(-1))
+        assertFalse(noStudents!!.disenrollStudent(0))
+    }
+
+    @Test
+    fun `disenrolling an already disenrolled student returns false`() {
+        assertTrue(filledStudent!!.findStudent(3)!!.disenrolled)
+        assertFalse(filledStudent!!.disenrollStudent(3))
+    }
+
+    @Test
+    fun `disenrolling an enrolled student that is present returns true and disenrolls`() {
+        assertFalse(filledStudent!!.findStudent(0)!!.disenrolled)
+        assertTrue(filledStudent!!.disenrollStudent(0))
+        assertTrue(filledStudent!!.findStudent(0)!!.disenrolled)
     }
 }

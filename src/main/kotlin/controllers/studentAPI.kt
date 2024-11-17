@@ -107,6 +107,7 @@ class studentAPI(serializerType: serializer) {
             val studentToDisenroll = students[indexToDisenroll]
             if (!studentToDisenroll.disenrolled) {
                 studentToDisenroll.disenrolled = true
+                return true
             }
         }
         return false
