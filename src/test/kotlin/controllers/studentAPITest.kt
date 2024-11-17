@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import persistence.XMLSerializer
+import persistence.JSONSerializer
 import java.io.File
 import kotlin.test.assertFalse
 
@@ -16,8 +16,8 @@ class studentAPITest {
     private var thirdYearStudent: Student? = null
     private var fourthYearStudent: Student? = null
     private var mastersStudent: Student? = null
-    private var filledStudent: studentAPI? = studentAPI(XMLSerializer(File("students.xml")))
-    private var noStudents: studentAPI? = studentAPI(XMLSerializer(File("clear-students.xml")))
+    private var filledStudent: studentAPI? = studentAPI(JSONSerializer(File("students.json")))
+    private var noStudents: studentAPI? = studentAPI(JSONSerializer(File("clear-students.json")))
 
     @BeforeEach
     fun setup() {
@@ -203,5 +203,44 @@ class studentAPITest {
         assertEquals(4, filledStudent!!.numberOfStudents())
         assertEquals(mastersStudent, filledStudent!!.deleteStudent(3))
         assertEquals(3, filledStudent!!.numberOfStudents())
+    }
+
+    @Nested
+    inner class PersistenceTests {
+
+        @Test
+        fun `savning and loading an empty collection in JSON doesn't crash app`() {
+            val savingStudents = studentAPI(JSONSerializer(File("students.json")))
+            savingStudents.store()
+
+            val loadedStudents = studentAPI(JSONSerializer(File("students.json")))
+            loadedStudents.load()
+
+            assertEquals(0, savingStudents.numberOfStudents())
+            assertEquals(0, loadedStudents.numberOfStudents())
+            assertEquals(savingStudents.numberOfStudents(), loadedStudents.numberOfStudents())
+        }
+
+        @Test
+        fun `saving and loading a koaded collection in JSON doesnt't lose data`() {
+            val savingStudents = studentAPI(JSONSerializer(File("students.json")))
+            savingStudents.add(firstYearStudent!!)
+            savingStudents.add(secondYearStudent!!)
+            savingStudents.add(thirdYearStudent!!)
+            savingStudents.add(mastersStudent!!)
+            savingStudents.store()
+
+            val loadedStudents = studentAPI(JSONSerializer(File("students.json")))
+            loadedStudents.load()
+
+            assertEquals(4, savingStudents.numberOfStudents())
+            assertEquals(4, loadedStudents.numberOfStudents())
+            assertEquals(savingStudents.numberOfStudents(), loadedStudents.numberOfStudents())
+            assertEquals(savingStudents.findStudent(0), loadedStudents.findStudent(0))
+            assertEquals(savingStudents.findStudent(1), loadedStudents.findStudent(1))
+            assertEquals(savingStudents.findStudent(2), loadedStudents.findStudent(2))
+            assertEquals(savingStudents.findStudent(3), loadedStudents.findStudent(3))
+
+        }
     }
 }
