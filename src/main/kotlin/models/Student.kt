@@ -5,7 +5,7 @@ data class Student( var studentNo: Int,
                     var lastName: String,
                     var dateOfBirth: String,
                     var isEnrolled: Boolean,
-                    var isNotEnrolled: Boolean,
+                    var disenrolled: Boolean,
                     var courseHours: Double){
 
 }

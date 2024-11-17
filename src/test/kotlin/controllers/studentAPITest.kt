@@ -109,11 +109,26 @@ class studentAPITest {
         @Test
         fun `listNotEnrolledStudents returns no enrolled students when ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfNotEnrolledStudents())
-            assertTrue(noStudents!!.listNotEnrolledStudents().lowercase().contains("no enrolled students"))
+            assertFalse(noStudents!!.listNotEnrolledStudents().lowercase().contains("no enrolled students"))
         }
     }
         @Test
         fun `listNotEnrolledStudents returns disenrolled students when ArrayList has disenrolled students stored`(){
             assertEquals(2, filledStudent!!.numberOfNotEnrolledStudents())
+            val notEnrolledStudentString = filledStudent!!.listNotEnrolledStudents().lowercase()
+            assertFalse(notEnrolledStudentString.contains("john"))
+            assertFalse(notEnrolledStudentString.contains("jake"))
+            assertFalse(notEnrolledStudentString.contains("jacob"))
+            assertTrue(notEnrolledStudentString.contains("joanne"))
+            assertTrue(notEnrolledStudentString.contains("jett"))
         }
+
+    @Nested
+    inner class listStudentByName{
+        @Test
+        fun `listStudents by name returns no students when an ArrayList is empty`() {
+            assertEquals(0, noStudents!!.numberOfStudents())
+            assertTrue(noStudents!!.listStudentByName("jake").contains("no students"))
+        }
+    }
 }

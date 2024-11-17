@@ -27,7 +27,7 @@ class studentAPI(serializerType: serializer) {
 
     fun listEnrolledStudents(): String {
         return if (numberOfEnrolledStudents() == 0) "No enrolled students are in the system"
-        else students.filter { Student -> !Student.isNotEnrolled }
+        else students.filter { Student -> !Student.disenrolled }
             .joinToString(separator = "\n") { Student ->
                 students.indexOf(Student).toString() + ": " + Student.toString()
             }
@@ -51,17 +51,9 @@ class studentAPI(serializerType: serializer) {
             students.indexOf(Student).toString() + ": " + Student.toString()
         }
 
-    fun numberOfEnrolledStudents(): Int {
-        return students.stream().filter { Student: Student -> !Student.isEnrolled }
-            .count()
-            .toInt()
-    }
+    fun numberOfEnrolledStudents(): Int = students.count{ it.isEnrolled }
 
-    fun numberOfNotEnrolledStudents(): Int {
-        return students.stream().filter { Student: Student -> !Student.isNotEnrolled }
-            .count()
-            .toInt()
-    }
+    fun numberOfNotEnrolledStudents(): Int = students.count { !it.isEnrolled }
 
     fun numberOfStudents(): Int {
         return students.size
@@ -76,7 +68,7 @@ class studentAPI(serializerType: serializer) {
             foundStudent.firstName = Student.firstName
             foundStudent.lastName = Student.lastName
             foundStudent.isEnrolled = Student.isEnrolled
-            foundStudent.isNotEnrolled = Student.isNotEnrolled
+            foundStudent.disenrolled = Student.disenrolled
             foundStudent.courseHours = Student.courseHours
             foundStudent.dateOfBirth = Student.dateOfBirth
             return true
@@ -103,8 +95,8 @@ class studentAPI(serializerType: serializer) {
     fun disenrollStudent(indexToDisenroll: Int): Boolean {
         if (isValidIndex(indexToDisenroll)) {
             val studentToDisenroll = students[indexToDisenroll]
-            if (!studentToDisenroll.isNotEnrolled) {
-                studentToDisenroll.isNotEnrolled = true
+            if (!studentToDisenroll.disenrolled) {
+                studentToDisenroll.disenrolled = true
             }
         }
         return false
