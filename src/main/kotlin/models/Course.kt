@@ -1,5 +1,7 @@
 package models
 
+import utils.formatSetString
+
 data class Course(var courseId: Int,
              var isCourseOpen: Boolean,
              var languageTaught: Char,
@@ -39,9 +41,9 @@ data class Course(var courseId: Int,
         return false
     }
 
-fun listItems
+fun listStudents() = if (undergraduate.isEmpty()) "No Students on the Course" else formatSetString(undergraduate)
 
-   // override fun toString
+   override fun toString
 }
 //list of students
 

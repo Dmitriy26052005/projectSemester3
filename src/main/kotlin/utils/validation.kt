@@ -3,10 +3,10 @@ package utils
 import models.Course
 import models.Student
 
-fun formatListString(studentsToFormat: List<Student>): String =
-    studentsToFormat
-        .joinToString(separator = "\n") { student -> "$student"}.toString()
+fun formatListString(courseToFormat: List<Course>): String =
+    courseToFormat
+        .joinToString("\n") {course -> "$course"}
 
-fun formatSetString(coursesToFormat: List<Course>): String =
-    coursesToFormat
-        .joinToString(separator = "\n") {undergraduate -> "$undergraduate"}
+fun formatSetString(studentsToFormat: Set<Student>): String =
+    studentsToFormat
+        .joinToString("\n") {student -> "$student"}
