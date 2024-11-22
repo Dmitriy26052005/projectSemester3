@@ -5,4 +5,10 @@ data class Student( var studentNo: Int,
                     var lastName: String,
                     var dateOfBirth: String,
                     var isEnrolled: Boolean,
-                    var courseHours: Double){}
+                    var courseHours: Double){
+    //override fun toString() =
+    //    if (isItemComplete)
+      //      "${itemId}: ${itemContents} (Complete)"
+        //else
+          //  "${itemId}: ${itemContents} (TODO)"
+}
