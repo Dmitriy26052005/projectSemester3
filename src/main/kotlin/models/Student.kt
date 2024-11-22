@@ -6,9 +6,9 @@ data class Student( var studentNo: Int,
                     var dateOfBirth: String,
                     var isEnrolled: Boolean = false,
                     var courseHours: Double){
-    //override fun toString() =
-    //    if (isItemComplete)
-      //      "${itemId}: ${itemContents} (Complete)"
-        //else
-          //  "${itemId}: ${itemContents} (TODO)"
+    override fun toString() =
+        if (isEnrolled)
+            "${studentNo}: ${firstName} ${lastName} (Is Enrolled)"
+        else
+            "${studentNo}: ${firstName} ${lastName} (Disenrolled)"
 }
