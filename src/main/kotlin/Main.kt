@@ -1,3 +1,4 @@
+
 import controllers.courseAPI
 import controllers.studentAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -48,8 +49,7 @@ fun mainMenu() : Int {
 
 fun runMenu() {
     do {
-        val option = readNextInt(">--->")
-        when (option) {
+        when (val option = mainMenu()) {
             1 -> addStudent()
             2 -> listStudent()
             3 -> listStudentByName()
@@ -79,7 +79,7 @@ fun addStudent() {
     val fName = readNextLine("Please enter the Student's First Name")
     val lName = readNextLine("Please enter the Student's Last Name")
     val dob = readNextLine("Please enter the Student's Date of Birth")
-    val isAdded = studentAPI.add(Student(studentNo, fName, lName, dob, false, false, 0.0))
+    val isAdded = studentAPI.add(Student(studentNo, fName, lName, dob, false, 0.0))
 
     if (isAdded) {
         println("Student added to the system!")
@@ -186,7 +186,7 @@ listAllStudents()
             val lName = readNextLine("Please enter the Student's Last Name")
             val dob = readNextLine("Please enter the Student's Date of Birth")
 
-            if (studentAPI.updateStudent(indexToUpdate, Student(studentNo, fName, lName, dob, false, false, 0.0))) {
+            if (studentAPI.updateStudent(indexToUpdate, Student(studentNo, fName, lName, dob, false, 0.0))) {
                 println("Update Successfully Executed")
             } else {
                 println("Update Failed")

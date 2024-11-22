@@ -21,11 +21,11 @@ class studentAPITest {
 
     @BeforeEach
     fun setup() {
-        firstYearStudent = Student(1, "John", "Doe", "01/02/2002", true, false, 26.00)
-        secondYearStudent = Student(2, "Jake", "Dune", "24/03/2001", true, false, 26.50)
-        thirdYearStudent = Student(3, "Jacob", "Dan", "31/05/2000", true, false, 25.00)
-        fourthYearStudent = Student(4, "Joanne", "Dooly", "03/11/2004", false, true, 30.00)
-        mastersStudent = Student(5, "Jett", "Dett", "05/08/2003", false, true, 35.00)
+        firstYearStudent = Student(1, "John", "Doe", "01/02/2002", true, 26.00)
+        secondYearStudent = Student(2, "Jake", "Dune", "24/03/2001", true, 26.50)
+        thirdYearStudent = Student(3, "Jacob", "Dan", "31/05/2000", true, 25.00)
+        fourthYearStudent = Student(4, "Joanne", "Dooly", "03/11/2004", false, 30.00)
+        mastersStudent = Student(5, "Jett", "Dett", "05/08/2003", false,  35.00)
 
         filledStudent!!.add(firstYearStudent!!)
         filledStudent!!.add(secondYearStudent!!)
@@ -49,7 +49,7 @@ class studentAPITest {
     inner class AddStudents {
         @Test
         fun `adding a student to a filled list of students, to an ArrayList`() {
-            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, false, 24.00)
+            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00)
             assertEquals(5, filledStudent!!.numberOfStudents())
             assertTrue(filledStudent!!.add(newStudent))
             assertEquals(6, filledStudent!!.numberOfStudents())
@@ -58,7 +58,7 @@ class studentAPITest {
 
         @Test
         fun `adding a Student to a clear list of students, adds to an ArrayList`() {
-            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, false, 24.00)
+            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00)
             assertEquals(0, noStudents!!.numberOfStudents())
             assertTrue(noStudents!!.add(newStudent))
             assertEquals(1, noStudents!!.numberOfStudents())
@@ -191,16 +191,16 @@ class studentAPITest {
             assertFalse(
                 filledStudent!!.updateStudent(
                     7,
-                    Student(443, "Jamie", "Johnson", "23/04/2001", true, true, 30.00)
+                    Student(443, "Jamie", "Johnson", "23/04/2001", true, 30.00)
                 )
             )
             assertFalse(
                 filledStudent!!.updateStudent(
                     -1,
-                    Student(222, "Jordan", "Peele", "22/0/1/2015", false, true, 20.00)
+                    Student(222, "Jordan", "Peele", "22/0/1/2015", false,  20.00)
                 )
             )
-            assertFalse(noStudents!!.updateStudent(0, Student(10, "JB", "Keene", "14/06/2000", true, false, 30.00)))
+            assertFalse(noStudents!!.updateStudent(0, Student(10, "JB", "Keene", "14/06/2000", false, 30.00)))
         }
 
         @Test
@@ -214,7 +214,7 @@ class studentAPITest {
             assertTrue(
                 filledStudent!!.updateStudent(
                     3,
-                    Student(33, "Jakob", "Daniels", "31/05/1999", true, false, 26.50)
+                    Student(33, "Jakob", "Daniels", "31/05/1999", true, 26.50)
                 )
             )
             assertEquals("Jakob", filledStudent!!.findStudent(3)!!.firstName)
@@ -316,14 +316,14 @@ class studentAPITest {
 
     @Test
     fun `disenrolling an already disenrolled student returns false`() {
-        assertTrue(filledStudent!!.findStudent(3)!!.disenrolled)
+        assertFalse(filledStudent!!.findStudent(3)!!.isEnrolled)
         assertFalse(filledStudent!!.disenrollStudent(3))
     }
 
     @Test
     fun `disenrolling an enrolled student that is present returns true and disenrolls`() {
-        assertFalse(filledStudent!!.findStudent(0)!!.disenrolled)
+        assertTrue(filledStudent!!.findStudent(0)!!.isEnrolled)
         assertTrue(filledStudent!!.disenrollStudent(0))
-        assertTrue(filledStudent!!.findStudent(0)!!.disenrolled)
+        assertFalse(filledStudent!!.findStudent(0)!!.isEnrolled)
     }
 }
