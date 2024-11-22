@@ -3,6 +3,7 @@ package models
 import utils.formatSetString
 
 data class Course(var courseId: Int,
+                  var courseName: String,
              var isCourseOpen: Boolean,
              var languageTaught: Char,
              var undergraduate: MutableSet<Student> = mutableSetOf()){
@@ -43,7 +44,10 @@ data class Course(var courseId: Int,
 
 fun listStudents() = if (undergraduate.isEmpty()) "No Students on the Course" else formatSetString(undergraduate)
 
-   override fun toString
+   override fun toString(): String {
+       val open = if (isCourseOpen) 'y' else 'n'
+       return "$courseId: $"
+   }
 }
 //list of students
 
