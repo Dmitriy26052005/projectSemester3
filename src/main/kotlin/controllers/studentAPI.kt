@@ -27,7 +27,7 @@ class studentAPI(serializerType: serializer) {
 
     fun listEnrolledStudents(): String {
         return if (numberOfEnrolledStudents() == 0) "No enrolled students are in the system"
-        else students.filter { Student -> !Student.disenrolled }
+        else students.filter { Student -> Student.isEnrolled }
             .joinToString(separator = "\n") { Student ->
                 students.indexOf(Student).toString() + ": " + Student.toString()
             }
@@ -86,7 +86,6 @@ class studentAPI(serializerType: serializer) {
             foundStudent.firstName = Student.firstName
             foundStudent.lastName = Student.lastName
             foundStudent.isEnrolled = Student.isEnrolled
-            foundStudent.disenrolled = Student.disenrolled
             foundStudent.courseHours = Student.courseHours
             foundStudent.dateOfBirth = Student.dateOfBirth
             return true
@@ -114,8 +113,8 @@ class studentAPI(serializerType: serializer) {
     fun disenrollStudent(indexToDisenroll: Int): Boolean {
         if (isValidIndex(indexToDisenroll)) {
             val studentToDisenroll = students[indexToDisenroll]
-            if (!studentToDisenroll.disenrolled) {
-                studentToDisenroll.disenrolled = true
+            if (studentToDisenroll.isEnrolled) {
+                studentToDisenroll.isEnrolled = false
                 return true
             }
         }
