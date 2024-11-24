@@ -59,5 +59,4 @@ data class Course(var courseId: Int,
         }
         return true
     }
-
 }

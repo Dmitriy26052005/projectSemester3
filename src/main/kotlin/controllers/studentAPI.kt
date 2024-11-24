@@ -16,14 +16,17 @@ class studentAPI(serializerType: serializer) {
     fun store() {
         serializer.write(students)
     }
+
     fun add(student: Student): Boolean {
         return students.add(student)
     }
+
     fun listAllStudents(): String =
         if (students.isEmpty()) "No students in the system"
-        else students.joinToString(separator = "\n") { Student -> students.indexOf(Student).toString() + ": " + Student.toString()
+        else students.joinToString(separator = "\n") { Student ->
+            students.indexOf(Student).toString() + ": " + Student.toString()
 
-    }
+        }
 
     fun listEnrolledStudents(): String {
         return if (numberOfEnrolledStudents() == 0) "No enrolled students are in the system"
@@ -41,23 +44,23 @@ class studentAPI(serializerType: serializer) {
             }
     }
 
-        fun listStudentByName(searchString: String): String {
+    fun listStudentByName(searchString: String): String {
 
-            val filteredStudents = students.filter { Student -> Student.firstName.contains(searchString, true) }
+        val filteredStudents = students.filter { Student -> Student.firstName.contains(searchString, true) }
 
-            return if (filteredStudents.isEmpty()) {
-                "No students of this Name"
-            } else {
-                students.filter { Student -> Student.firstName.contains(searchString, true) }
-                    .joinToString(separator = "\n") { Student ->
-                        students.indexOf(Student).toString() + ": " + Student.toString()
-                    }
-            }
+        return if (filteredStudents.isEmpty()) {
+            "No students of this Name"
+        } else {
+            students.filter { Student -> Student.firstName.contains(searchString, true) }
+                .joinToString(separator = "\n") { Student ->
+                    students.indexOf(Student).toString() + ": " + Student.toString()
+                }
         }
+    }
 
     fun listStudentByNumber(number: Int): String {
 
-     val symmetryStudent = students.filter { it.studentNo == number}
+        val symmetryStudent = students.filter { it.studentNo == number }
 
         return if (symmetryStudent.isEmpty()) {
             "No students found with this ID"
@@ -68,8 +71,9 @@ class studentAPI(serializerType: serializer) {
                     students.indexOf(Student).toString() + ": " + Student.toString()
                 }
         }
-        }
-    fun numberOfEnrolledStudents(): Int = students.count{ it.isEnrolled }
+    }
+
+    fun numberOfEnrolledStudents(): Int = students.count { it.isEnrolled }
 
     fun numberOfNotEnrolledStudents(): Int = students.count { !it.isEnrolled }
 

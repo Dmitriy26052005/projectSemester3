@@ -32,16 +32,14 @@ fun mainMenu() : Int {
             > | 7) Delete a Student
             >
             >        Course Menu
-            > | 8) Add Student to Course
+            > | 8) Add Course to Student
             > | 9) Update Course Contents for a Student
             > | 10) Delete Course Contents for a Student
-            > | 11) 
-            > | 12) Update course details
-            > | 13) Close a course
-            >
+            > | 11) Open / Close Course Status
+            > 
             > | 14) Save Details
             > | 15) Load Details
-            > 
+            >
             > | 16) Exit Application
         """.trimMargin(">"))
     return readNextInt("> --->")
