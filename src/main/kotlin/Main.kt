@@ -32,10 +32,10 @@ fun mainMenu() : Int {
             > | 7) Delete a Student
             >
             >        Course Menu
-            > | 8) Create a course
-            > | 9) Enroll a student into a course
-            > | 10) List all open courses
-            > | 11) List course by ID
+            > | 8) Add Student to Course
+            > | 9) Update Course Contents for a Student
+            > | 10) Delete Course Contents for a Student
+            > | 11) 
             > | 12) Update course details
             > | 13) Close a course
             >
