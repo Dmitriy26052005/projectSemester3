@@ -2,6 +2,7 @@ package controllers
 
 import models.Student
 import persistence.serializer
+import controllers.courseAPI
 
 class studentAPI(serializerType: serializer) {
     private var students = ArrayList<Student>()
@@ -125,6 +126,18 @@ class studentAPI(serializerType: serializer) {
         return if (isValidListIndex(indexToDelete, students)) {
             students.removeAt(indexToDelete)
         } else null
+    }
+
+    fun addStudentToCourse(studentNo: Int, courseId: Int) : String {
+        val student = students.find { it.studentNo == studentNo }
+        if (student == null) {
+            return "models.Employee with ID \${employeeId} does not exist"
+        } else if (courseAPI.courseExists(departmentId) != null) {
+            return "models.Department with ID \${departmentId} does not exist."
+        } else {
+            employees[employees.indexOf(employee)] = employee.copy(departmentId = departmentId)
+            return "models.Employee \${employee.name} moved to department ID \${departmentId}."
+        }
     }
     private fun isValidListIndex(index: Int, list: List<Student>): Boolean {
         return (index >= 0 && index < list.size)
