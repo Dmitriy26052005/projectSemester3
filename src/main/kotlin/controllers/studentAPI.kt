@@ -1,6 +1,7 @@
 package controllers
 
 import models.Student
+import models.Course
 import persistence.serializer
 import controllers.courseAPI
 
@@ -131,9 +132,9 @@ class studentAPI(serializerType: serializer) {
     fun addStudentToCourse(studentNo: Int, courseId: Int) : String {
         val student = students.find { it.studentNo == studentNo }
         if (student == null) {
-            return "models.Employee with ID \${employeeId} does not exist"
-        } else if (courseAPI.courseExists(departmentId) != null) {
-            return "models.Department with ID \${departmentId} does not exist."
+            return "models.Student with Number \${studentNo} does not exist"
+        } else if (courseAPI.courseExits(courseId) != null) {
+            return "models.Course with ID \${courseId} does not exist."
         } else {
             employees[employees.indexOf(employee)] = employee.copy(departmentId = departmentId)
             return "models.Employee \${employee.name} moved to department ID \${departmentId}."
