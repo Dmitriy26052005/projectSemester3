@@ -2,13 +2,10 @@ package controllers
 
 import models.Student
 import persistence.serializer
-import controllers.courseAPI
-
 
 class studentAPI(serializerType: serializer) {
     private var students = ArrayList<Student>()
     private var serializer: serializer = serializerType
-
 
     @Throws(Exception::class)
     fun load() {
@@ -130,17 +127,6 @@ class studentAPI(serializerType: serializer) {
         } else null
     }
 
-    fun addStudentToCourse(studentNo: Int, courseId: Int): String {
-        val student = students.find{it.studentNo == studentNo}
-        if (student == null) {
-            return "models.Student with Student Number \${studentNo} does not exist"
-        } else if (courseAPI.courseExists(courseId) != null) {
-            return "models.Student with Student No \${courseId does not exist.}"
-        } else {
-            students[students.indexOf(student)] = student.copy(studentNo = studentNo)
-            return "models.Student \${student.studentNo} enrolled into the Course: {courseId}."
-        }
-    }
     private fun isValidListIndex(index: Int, list: List<Student>): Boolean {
         return (index >= 0 && index < list.size)
     }

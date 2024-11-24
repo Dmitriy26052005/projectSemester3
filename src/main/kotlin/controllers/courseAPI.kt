@@ -16,13 +16,4 @@ class courseAPI (serializerType: serializer) {
     fun store() {
         serializer.write(courses)
     }
-
-    fun addCourse(course: Course){
-
-        courses.add(course)
-    }
-
-    fun courseExists(courseId: Int): Course? {
-        return courses.find{it -> it.courseId == courseId}
-    }
 }
