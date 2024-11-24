@@ -2,7 +2,7 @@ package controllers
 
 import models.Course
 
-class courseAPI {
+class courseAPI  {
     private val courses = mutableListOf<Course>()
 
     fun addCourse(course: Course) {
