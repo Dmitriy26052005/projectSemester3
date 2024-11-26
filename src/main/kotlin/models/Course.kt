@@ -46,7 +46,7 @@ data class Course(var courseId: Int,
 
     override fun toString(): String {
         val open = if (isCourseOpen) 'y' else 'n'
-        return "$courseId: Course Tiele: ($courseName), Course Status: ($isCourseOpen), Language Taught: ($languageTaught) \n${listStudents()}"
+        return "$courseId: Course Tiele: ($courseName), Course Status: ($open), Language Taught: ($languageTaught) \n${listStudents()}"
     }
 
 

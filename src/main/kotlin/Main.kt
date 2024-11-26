@@ -2,6 +2,7 @@
 import controllers.courseAPI
 import controllers.studentAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
+import models.Course
 import models.Student
 import persistence.JSONSerializer
 import utils.readNextInt
@@ -13,6 +14,7 @@ private val logger = KotlinLogging.logger{}
 private val studentAPI = studentAPI(JSONSerializer(File("students.json")))
 //declaration of global variables which exist in main.
 private val courseAPI = courseAPI(JSONSerializer(File("course.json")))
+private val Course = Course()
 
 fun main() {
     runMenu()
@@ -57,15 +59,14 @@ fun runMenu() {
             7 -> updateStudentDetails()
             8 -> numberOfStudents()
             9 -> deleteStudent()
-            10 -> addCourse()
-            11 -> addStudentToCourse()
-            12 -> listAllCourses()
-            13 -> listCourseById()
-            14 -> updateCourseDetails()
-            15 -> closeCourse()
-            16 -> save()
-            17 -> load()
-            18 -> exit()
+            10 -> addCourseToStudent()
+            11 -> listAllCourses()
+            12 -> listCourseById()
+            13 -> updateCourseDetails()
+            14 -> closeCourse()
+            15 -> save()
+            16 -> load()
+            17 -> exit()
             else -> """Please enter a valid option:
                      ${option} is invalid.
           """.trimMargin()
@@ -213,12 +214,29 @@ listAllStudents()
     }
 }
 
-fun addCourse() {
-
+private fun addCourseToStudent(){
+    val student: Student?
 }
 
-fun addStudentToCourse() {
+private fun askUserToChooseEnrolledStudent(): Student? {
+    listEnrolledStudents()
+    if (studentAPI.numberOfEnrolledStudents() > 0) {
+        val student = studentAPI.findStudent(readNextInt("Enter the Student number to search for: "))
+        if (student != null) {
+            if (!student.isEnrolled) {
+                println("Student is Not Enrolled")
+            } else {
+                return student
+            }
+        } else {
+            println("Student Number not in the System")
+        }
+    }
+    return null
+}
 
+private fun askUserToChooseStudent(student: Student): Student? {
+    if (Course.numberOfUndergraduate() > 0)
 }
 
 fun listAllCourses() {
