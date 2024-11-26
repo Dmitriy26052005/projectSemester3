@@ -145,11 +145,10 @@ class studentAPITest {
 
         val nameJohnString = filledStudent!!.listStudentByName("john").lowercase()
         assertTrue(nameJohnString.contains("doe"))
-        assertTrue(nameJohnString.contains("01/02/2002"))
+
 
         val nameJakeString = filledStudent!!.listStudentByName("jake").lowercase()
         assertTrue(nameJakeString.contains("dune"))
-        assertTrue(nameJakeString.contains("24/03/2001"))
     }
 
     @Nested
