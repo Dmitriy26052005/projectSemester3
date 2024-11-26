@@ -2,11 +2,12 @@ package models
 
 import utils.formatListString
 
-data class Course(var courseId: Int,
-                  var courseName: String,
-             var isCourseOpen: Boolean,
-             var languageTaught: Char,
-             var undergraduate: MutableList<Student> = mutableListOf()) {
+data class Course(
+    var courseId: Int,
+    var courseName: String,
+    var isCourseOpen: Boolean = false,
+    var languageTaught: Char,
+    var undergraduate: MutableList<Student> = mutableListOf()) {
 
     private var finalStudentId = 0
     private fun getNextStudentId() = finalStudentId++

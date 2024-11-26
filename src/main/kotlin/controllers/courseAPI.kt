@@ -28,7 +28,6 @@ class courseAPI (serializerType: serializer) {
     fun removeCourse(id: Int) = courses.removeIf{ course -> course.courseId == id}
 
     fun updateCourse(id: Int, course: Course) {
-        val
     }
 
     }

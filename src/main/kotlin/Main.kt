@@ -3,7 +3,9 @@ import controllers.courseAPI
 import controllers.studentAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
 import models.Student
+import models.Course
 import persistence.JSONSerializer
+import utils.readNextChar
 import utils.readNextInt
 import utils.readNextLine
 import java.io.File
@@ -213,7 +215,12 @@ listAllStudents()
 }
 
 private fun addCourseToStudent(){
-    val student: Student?
+    val student: Student? = askUserToChooseEnrolledStudent()
+    if (student != null) {
+        if (courseAPI.addCourse(Course(
+                courseId = readNextInt("Course ID: "), courseName = readNextLine("Course Name: "),
+                isCourseOpen = readNextLine("Y or N: "), languageTaught = readNextChar("E / I / S"))))
+    }
 }
 
 private fun askUserToChooseEnrolledStudent(): Student? {
