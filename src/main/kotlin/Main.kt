@@ -2,7 +2,6 @@
 import controllers.courseAPI
 import controllers.studentAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
-import models.Course
 import models.Student
 import persistence.JSONSerializer
 import utils.readNextInt
@@ -14,7 +13,6 @@ private val logger = KotlinLogging.logger{}
 private val studentAPI = studentAPI(JSONSerializer(File("students.json")))
 //declaration of global variables which exist in main.
 private val courseAPI = courseAPI(JSONSerializer(File("course.json")))
-private val Course = Course()
 
 fun main() {
     runMenu()
@@ -233,10 +231,6 @@ private fun askUserToChooseEnrolledStudent(): Student? {
         }
     }
     return null
-}
-
-private fun askUserToChooseStudent(student: Student): Student? {
-    if (Course.numberOfUndergraduate() > 0)
 }
 
 fun listAllCourses() {

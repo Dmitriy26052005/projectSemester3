@@ -17,4 +17,18 @@ class courseAPI (serializerType: serializer) {
         serializer.write(courses)
     }
 
+    private var finalId = 0
+    private fun getId() = finalId++
+
+    fun addCourse(course: Course): Boolean {
+        course.courseId = getId()
+        return courses.add(course)
+    }
+
+    fun removeCourse(id: Int) = courses.removeIf{ course -> course.courseId == id}
+
+    fun updateCourse(id: Int, course: Course) {
+        val
+    }
+
     }

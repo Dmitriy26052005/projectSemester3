@@ -1,9 +1,8 @@
 package utils
 
-import models.Course
 import models.Student
 
-fun formatListString(courseToFormat: List<Course>): String =
+fun formatListString(courseToFormat: MutableList<Student>): String =
     courseToFormat
         .joinToString("\n") {course -> "$course"}
 

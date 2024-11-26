@@ -1,12 +1,12 @@
 package models
 
-import utils.formatSetString
+import utils.formatListString
 
 data class Course(var courseId: Int,
                   var courseName: String,
              var isCourseOpen: Boolean,
              var languageTaught: Char,
-             var undergraduate: MutableSet<Student> = mutableSetOf()) {
+             var undergraduate: MutableList<Student> = mutableListOf()) {
 
     private var finalStudentId = 0
     private fun getNextStudentId() = finalStudentId++
@@ -42,7 +42,7 @@ data class Course(var courseId: Int,
         return false
     }
 
-    fun listStudents() = if (undergraduate.isEmpty()) "No Students on the Course" else formatSetString(undergraduate)
+    fun listStudents() = if (undergraduate.isEmpty()) "No Students on the Course" else formatListString(undergraduate)
 
     override fun toString(): String {
         val open = if (isCourseOpen) 'y' else 'n'
