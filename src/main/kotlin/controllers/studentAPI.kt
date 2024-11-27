@@ -3,7 +3,7 @@ package controllers
 import models.Student
 import persistence.serializer
 
-class studentAPI(serializerType: serializer) {
+class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
     private var students = ArrayList<Student>()
     private var serializer: serializer = serializerType
 

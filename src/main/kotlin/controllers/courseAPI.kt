@@ -4,7 +4,8 @@ import models.Course
 import persistence.serializer
 
 class courseAPI (serializerType: serializer) {
-    private var courses = ArrayList<Course>()
+
+    private var courses = mutableListOf<Course>()
     private var serializer: serializer = serializerType
 
     @Throws(Exception::class)
@@ -17,17 +18,13 @@ class courseAPI (serializerType: serializer) {
         serializer.write(courses)
     }
 
-    private var finalId = 0
-    private fun getId() = finalId++
-
-    fun addCourse(course: Course): Boolean {
-        course.courseId = getId()
-        return courses.add(course)
+    fun addCourse(course: Course){
+        courses.add(course)
     }
 
-    fun removeCourse(id: Int) = courses.removeIf{ course -> course.courseId == id}
+    fun getAllCourses(): List<Course> = courses
 
-    fun updateCourse(id: Int, course: Course) {
+    fun courseExists(courseId: Int): Course? {
+        return courses.find {it -> it.id == courseId}
     }
-
     }

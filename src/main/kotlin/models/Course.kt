@@ -1,7 +1,7 @@
 package models
 
 data class Course(
-    var Id: Int,
+    var id: Int,
     var courseName: String,
     var isCourseOpen: Boolean = false,
     var languageTaught: Char)
