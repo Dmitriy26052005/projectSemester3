@@ -1,10 +1,10 @@
 package models
 
 data class Course(
-    var courseId: Int,
+    var Id: Int,
     var courseName: String,
     var isCourseOpen: Boolean = false,
-    var languageTaught: Char) {}
+    var languageTaught: Char)
    /* var undergraduate: MutableList<Student> = mutableListOf()) {
 
     private var finalStudentId = 0
