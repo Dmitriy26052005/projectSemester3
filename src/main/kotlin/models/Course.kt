@@ -5,12 +5,12 @@ data class Course(
     var courseName: String,
     var isCourseOpen: Boolean = false,
     var languageTaught: Char)
-   /* var undergraduate: MutableList<Student> = mutableListOf()) {
+/*{
 
     private var finalStudentId = 0
     private fun getNextStudentId() = finalStudentId++
 
-    fun addStudent(student: Student): Boolean {
+    fun addStudentToCourse(student: Student): Boolean {
         student.studentNo = getNextStudentId()
         return undergraduate.add(student)
     }
