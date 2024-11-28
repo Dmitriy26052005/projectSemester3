@@ -10,22 +10,26 @@ import persistence.JSONSerializer
 import java.io.File
 import kotlin.test.assertFalse
 
-class studentAPITest {
+class StudentAPITest {
     private var firstYearStudent: Student? = null
     private var secondYearStudent: Student? = null
     private var thirdYearStudent: Student? = null
     private var fourthYearStudent: Student? = null
     private var mastersStudent: Student? = null
-    private var filledStudent: studentAPI? = studentAPI(JSONSerializer(File("students.json")))
-    private var noStudents: studentAPI? = studentAPI(JSONSerializer(File("clear-students.json")))
+    private val serializer1 = JSONSerializer(File("students.json"))
+    private val serializer2 = JSONSerializer(File("clear-students.json"))
+    private val serializer3 = JSONSerializer(File("course.json"))
+    private val courseAPI = courseAPI(serializer3)
+    private var filledStudent: studentAPI? = studentAPI(serializer1, courseAPI)
+    private var noStudents: studentAPI? = studentAPI(serializer2, courseAPI)
 
     @BeforeEach
     fun setup() {
-        firstYearStudent = Student(1, "John", "Doe", "01/02/2002", true, 26.00)
-        secondYearStudent = Student(2, "Jake", "Dune", "24/03/2001", true, 26.50)
-        thirdYearStudent = Student(3, "Jacob", "Dan", "31/05/2000", true, 25.00)
-        fourthYearStudent = Student(4, "Joanne", "Dooly", "03/11/2004", false, 30.00)
-        mastersStudent = Student(5, "Jett", "Dett", "05/08/2003", false,  35.00)
+        firstYearStudent = Student(1, "John", "Doe", "01/02/2002", true, 26.00, 12)
+        secondYearStudent = Student(2, "Jake", "Dune", "24/03/2001", true, 26.50, 13)
+        thirdYearStudent = Student(3, "Jacob", "Dan", "31/05/2000", true, 25.00, 14)
+        fourthYearStudent = Student(4, "Joanne", "Dooly", "03/11/2004", false, 30.00, 15)
+        mastersStudent = Student(5, "Jett", "Dett", "05/08/2003", false,  35.00, 16)
 
         filledStudent!!.add(firstYearStudent!!)
         filledStudent!!.add(secondYearStudent!!)
@@ -49,7 +53,7 @@ class studentAPITest {
     inner class AddStudents {
         @Test
         fun `adding a student to a filled list of students, to an ArrayList`() {
-            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00)
+            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00, 30)
             assertEquals(5, filledStudent!!.numberOfStudents())
             assertTrue(filledStudent!!.add(newStudent))
             assertEquals(6, filledStudent!!.numberOfStudents())
@@ -58,7 +62,7 @@ class studentAPITest {
 
         @Test
         fun `adding a Student to a clear list of students, adds to an ArrayList`() {
-            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00)
+            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00, 30)
             assertEquals(0, noStudents!!.numberOfStudents())
             assertTrue(noStudents!!.add(newStudent))
             assertEquals(1, noStudents!!.numberOfStudents())
@@ -67,7 +71,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class listStudents {
+    inner class ListStudents {
         @Test
         fun `listAllStudents returns No Students stored message when ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfStudents())
@@ -87,7 +91,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class listEnrolledStudents {
+    inner class ListEnrolledStudents {
         @Test
         fun `listEnrolledStudents returns no enrolled students when ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfEnrolledStudents())
@@ -124,7 +128,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class listStudentByName {
+    inner class ListStudentByName {
         @Test
         fun `listStudentsByName returns no students when an ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfStudents())
@@ -152,7 +156,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class listStudentByNumber {
+    inner class ListStudentByNumber {
 
         @Test
         fun `listStudentByNumber returns no students when an ArrayList is empty`() {
@@ -183,23 +187,23 @@ class studentAPITest {
 
 
     @Nested
-    inner class updateStudent {
+    inner class UpdateStudent {
 
         @Test
         fun `updating a student that doesn't exist returns a false result`() {
             assertFalse(
                 filledStudent!!.updateStudent(
                     7,
-                    Student(443, "Jamie", "Johnson", "23/04/2001", true, 30.00)
+                    Student(443, "Jamie", "Johnson", "23/04/2001", true, 30.00, 22)
                 )
             )
             assertFalse(
                 filledStudent!!.updateStudent(
                     -1,
-                    Student(222, "Jordan", "Peele", "22/0/1/2015", false,  20.00)
+                    Student(222, "Jordan", "Peele", "22/0/1/2015", false,  20.00, 10)
                 )
             )
-            assertFalse(noStudents!!.updateStudent(0, Student(10, "JB", "Keene", "14/06/2000", false, 30.00)))
+            assertFalse(noStudents!!.updateStudent(0, Student(10, "JB", "Keene", "14/06/2000", false, 30.00, 22)))
         }
 
         @Test
@@ -213,7 +217,7 @@ class studentAPITest {
             assertTrue(
                 filledStudent!!.updateStudent(
                     3,
-                    Student(33, "Jakob", "Daniels", "31/05/1999", true, 26.50)
+                    Student(33, "Jakob", "Daniels", "31/05/1999", true, 26.50, 14)
                 )
             )
             assertEquals("Jakob", filledStudent!!.findStudent(3)!!.firstName)
@@ -223,7 +227,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class deleteStudent
+    inner class DeleteStudent
 
     @Test
     fun `deleting a student that doesn't exist, returns null`() {
@@ -246,10 +250,10 @@ class studentAPITest {
 
         @Test
         fun `savning and loading an empty collection in JSON doesn't crash app`() {
-            val savingStudents = studentAPI(JSONSerializer(File("students.json")))
+            val savingStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             savingStudents.store()
 
-            val loadedStudents = studentAPI(JSONSerializer(File("students.json")))
+            val loadedStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             loadedStudents.load()
 
             assertEquals(0, savingStudents.numberOfStudents())
@@ -259,14 +263,14 @@ class studentAPITest {
 
         @Test
         fun `saving and loading a koaded collection in JSON doesnt't lose data`() {
-            val savingStudents = studentAPI(JSONSerializer(File("students.json")))
+            val savingStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             savingStudents.add(firstYearStudent!!)
             savingStudents.add(secondYearStudent!!)
             savingStudents.add(thirdYearStudent!!)
             savingStudents.add(mastersStudent!!)
             savingStudents.store()
 
-            val loadedStudents = studentAPI(JSONSerializer(File("students.json")))
+            val loadedStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             loadedStudents.load()
 
             assertEquals(4, savingStudents.numberOfStudents())
@@ -304,7 +308,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class disenrollStudents
+    inner class DisenrollStudents
 
     @Test
     fun `disenrolling a student that does not exist returns false`() {

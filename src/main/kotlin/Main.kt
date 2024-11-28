@@ -2,17 +2,21 @@
 import controllers.courseAPI
 import controllers.studentAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
+import models.Course
 import models.Student
 import persistence.JSONSerializer
+import utils.readNextChar
+import utils.readNextDouble
 import utils.readNextInt
 import utils.readNextLine
 import java.io.File
 
 private val logger = KotlinLogging.logger{}
 //private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
-private val studentAPI = studentAPI(JSONSerializer(File("students.json")))
-//declaration of global variables which exist in main.
 private val courseAPI = courseAPI(JSONSerializer(File("course.json")))
+private val studentAPI = studentAPI(JSONSerializer(File("students.json")), courseAPI)
+//declaration of global variables which exist in main.
+
 
 fun main() {
     runMenu()
@@ -22,25 +26,28 @@ fun mainMenu() : Int {
     print(
         """
             >      Student Menu
-            > | 
-            > | 1) Add a Student
-            > | 2) List all Students
-            > | 3) List Students by Name
-            > | 4) List Students by Student Number
-            > | 5) Update Student Details
-            > | 6) Total Number of Students 
-            > | 7) Delete a Student
-            >
-            >        Course Menu
-            > | 8) Add Course to Student
-            > | 9) Update Course Contents for a Student
-            > | 10) Delete Course Contents for a Student
-            > | 11) Open / Close Course Status
+            > |  
+            > | 1) Add Student to the System
+            > | 2) List Student by Enrolled Status
+            > | 3) List Student By Name
+            > | 4) List Student By Student Number Specified
+            > | 5) Enroll an Existing Student into a Course
+            > | 6) Disenroll an Enrolled Student from a Course 
+            > | 7) Update Student Details by Specifying their Number
+            > | 8) Show the total number of students
+            > | 9) Delete a Student from the system
+            > 
+            >       Course Menu
+            >  
+            > | 10) Add Course to the System
+            > | 11) List All Courses
+            > | 12) Show Total Number Of Courses
+            > | 13) Update a Course Contents
             > 
             > | 14) Save Details
             > | 15) Load Details
-            >
-            > | 16) Exit Application
+            > 
+            > | 18) Exit Application
         """.trimMargin(">"))
     return readNextInt("> --->")
 }
@@ -57,14 +64,13 @@ fun runMenu() {
             7 -> updateStudentDetails()
             8 -> numberOfStudents()
             9 -> deleteStudent()
-            10 -> addCourseToStudent()
+            10 -> addCourse()
             11 -> listAllCourses()
-            12 -> listCourseById()
+            12 -> totalNumberOfCourses()
             13 -> updateCourseDetails()
-            14 -> closeCourse()
-            15 -> save()
-            16 -> load()
-            17 -> exit()
+            14 -> save()
+            15 -> load()
+            16 -> exit()
             else -> """Please enter a valid option:
                      ${option} is invalid.
           """.trimMargin()
@@ -76,7 +82,7 @@ fun addStudent() {
     val fName = readNextLine("Please enter the Student's First Name")
     val lName = readNextLine("Please enter the Student's Last Name")
     val dob = readNextLine("Please enter the Student's Date of Birth")
-    val isAdded = studentAPI.add(Student(studentNo, fName, lName, dob, false, 0.0))
+    val isAdded = studentAPI.add(Student(studentNo, fName, lName, dob, false, 0.0, 0))
 
     if (isAdded) {
         println("Student added to the system!")
@@ -145,12 +151,20 @@ fun listStudentByNumber() {
 }
 
 fun enrollStudent() {
-    listAllStudents()
+
+    println(listAllStudents())
+    println(listAllCourses())
     if (studentAPI.numberOfStudents() > 0) {
 
-        val indexToEnroll = readNextInt("Enter the index of the student you want to enrol: ")
+        val indexToEnroll = readNextInt("Enter the index of the student you want to enroll: ")
 
         if (studentAPI.enrollStudent(indexToEnroll)) {
+            println("Enter Student Number")
+            val studentNo = readNextInt("Please enter the Student Number to Enroll")
+            println("Enter the Course ID")
+            val courseId = readNextInt("Please enter the ID of the course")
+            val result = studentAPI.addStudentToCourse(studentNo, courseId)
+            println(result)
             println("Student successfully enrolled")
         } else {
             println("Enrollment unsuccessful")
@@ -159,19 +173,25 @@ fun enrollStudent() {
 }
 
 fun disenrollStudent() {
-    listEnrolledStudents()
+    println(listEnrolledStudents())
+    println(listAllCourses())
     if (studentAPI.numberOfEnrolledStudents() > 0) {
 
   val indexToDisenroll = readNextInt("Enter the index of the student to disenroll: ")
 
         if(studentAPI.disenrollStudent(indexToDisenroll)) {
-        println("Student successfully disrolled")
+       println("Enter the Student Number to Disenroll")
+       val studentNo = readNextInt("Please enter the Student Number to Disenroll")
+            println("Enter the Course ID")
+            val courseId = readNextInt("Please enter the ID of the course")
+            val result = studentAPI.removeStudentFromCourse(studentNo, courseId)
+            println(result)
+            println("Student successfully disenrolled")
         } else{
             println("Disrollment unsuccessful")
         }
     }
 }
-
 
 fun updateStudentDetails() {
 listAllStudents()
@@ -182,21 +202,20 @@ listAllStudents()
             val fName = readNextLine("Please enter the Student's First Name")
             val lName = readNextLine("Please enter the Student's Last Name")
             val dob = readNextLine("Please enter the Student's Date of Birth")
+            val courseHours = readNextDouble("Please enter the amount of hours the student will attend")
 
-            if (studentAPI.updateStudent(indexToUpdate, Student(studentNo, fName, lName, dob, false, 0.0))) {
+            if (studentAPI.updateStudent(indexToUpdate, Student(studentNo, fName, lName, dob, false, courseHours, 0))) {
                 println("Update Successfully Executed")
             } else {
                 println("Update Failed")
             }
         } else {
-            println("There is no student under this index.")
+            println("There is no students to update")
         }
     }
 }
 fun numberOfStudents() {
-"""${studentAPI.numberOfStudents()}
-    > Are in the system
-""".trimMargin(">")
+println("${studentAPI.numberOfStudents()} students are in the system")
 }
 
 fun deleteStudent() {
@@ -212,44 +231,49 @@ listAllStudents()
     }
 }
 
-private fun addCourseToStudent() {
-    val student: Student? = askUserToChooseEnrolledStudent()
+fun addCourse() {
+    val id = readNextInt("Please enter a Course ID: ")
+    val courseName = readNextLine("Please enter the Course Name: ")
+    val isCourseOpen = readNextLine("Open or Closed: ")
+    val languageTaught = readNextChar("E for English  \nI for Irish  \n S for Spanish")
+    val isCreated = courseAPI.add(Course(id, courseName, isCourseOpen, languageTaught))
 
+    if (isCreated != null) {
+        println("Course successfully added to the system!")
+    } else println("Unsuccessful")
+}
 
-    }
-
-
-private fun askUserToChooseEnrolledStudent(): Student? {
-    listEnrolledStudents()
-    if (studentAPI.numberOfEnrolledStudents() > 0) {
-        val student = studentAPI.findStudent(readNextInt("Enter the Student number to search for: "))
-        if (student != null) {
-            if (!student.isEnrolled) {
-                println("Student is Not Enrolled")
-            } else {
-                return student
-            }
-        } else {
-            println("Student Number not in the System")
-        }
-    }
-    return null
+fun totalNumberOfCourses() {
+    println("${courseAPI.numberOfCourses()}")
 }
 
 fun listAllCourses() {
-
-}
-
-fun listCourseById() {
-
+println(courseAPI.listAllCourses())
 }
 
 fun updateCourseDetails() {
+    listAllCourses()
+    if (courseAPI.numberOfCourses() > 0) {
+        val indexToUpdate = readNextInt("Enter the index of a Course to edit: ")
 
-}
+        if (courseAPI.isValidIndex(indexToUpdate)) {
+            val id = readNextInt("Please enter a Course ID")
+            val courseName = readNextLine("Please enter the Name of the Course")
+            val isCourseOpen = readNextLine("Please enter the Course Status: \n Open or Closed")
+            val languageTaught = readNextChar(
+                "Ine what Language will the course be taught in? " +
+                        "\nE for English" +
+                        "\nI for Irish" +
+                        "\n S for Spanish"
+            )
 
-fun closeCourse() {
-
+            if (courseAPI.updateCourse(indexToUpdate, Course(id, courseName, isCourseOpen, languageTaught))) {
+                println("Update Successfully Executed")
+            } else {
+                println("There is no Course under this index.")
+            }
+        }
+    }
 }
 
 fun save() {

@@ -1,10 +1,9 @@
 package controllers
 
 import models.Course
-import models.Student
 import persistence.serializer
 
-class courseAPI (serializerType: serializer, private val studentAPI: studentAPI) {
+class courseAPI (serializerType: serializer) {
 
     private var courses = mutableListOf<Course>()
     private var serializer: serializer = serializerType
@@ -19,11 +18,16 @@ class courseAPI (serializerType: serializer, private val studentAPI: studentAPI)
         serializer.write(courses)
     }
 
-    fun addCourse(course: Course){
-        courses.add(course)
+    fun add(course: Course): Boolean {
+       return courses.add(course)
     }
 
-    fun getAllCourses(): List<Course> = courses
+    fun listAllCourses(): String =
+        if (courses.isEmpty()) "No courses in the system"
+        else courses.joinToString(separator = "\n") { Course ->
+            courses.indexOf(Course).toString() + ": " + Course.toString()
+
+        }
 
     fun courseExists(courseId: Int): Course? {
         return courses.find {it -> it.id == courseId}
@@ -31,20 +35,15 @@ class courseAPI (serializerType: serializer, private val studentAPI: studentAPI)
 
     fun numberOfCourses() = courses.size
 
-    fun findStudentInCourse(id: Int): Student? {
-        return studentAPI.students.find { student -> student.studentNo == id }
+    fun findCourse(index: Int): Course? {
+        return if (isValidListIndex(index, courses)) {
+            courses[index]
+        } else null
     }
 
-    fun findCourseById(id: Int): Course? {
-        return courses.find { it.id == id }
-    }
-
-    fun deleteStudentFromCourse(id: Int): Boolean {
-        return studentAPI.students.removeIf { student -> student.studentNo == id }
-    }
 
     fun updateCourse(id: Int, newCourse: Course): Boolean {
-        val foundCourse = findCourseById(id)
+        val foundCourse = findCourse(id)
 
         if (foundCourse != null) {
             foundCourse.id = newCourse.id
@@ -56,5 +55,11 @@ class courseAPI (serializerType: serializer, private val studentAPI: studentAPI)
         }
         return false
     }
+    fun isValidIndex(index: Int): Boolean {
+        return isValidListIndex(index, courses)
+    }
 
+    fun isValidListIndex(index: Int, list: MutableList<Course>): Boolean {
+        return (index >= 0 && index < list.size)
+    }
 }

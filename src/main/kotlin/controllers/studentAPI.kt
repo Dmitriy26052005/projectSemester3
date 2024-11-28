@@ -125,17 +125,28 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         return false
     }
 
-    fun getStudentsByCourseId(courseId: Int): List<Student> = students.filter {it.courseId == courseId}
-
     fun addStudentToCourse(studentNo: Int, courseId: Int): String {
         val student = students.find{it.studentNo == studentNo}
         if (student == null) {
-            return "Student with Number ${studentNo} does not exist in the system"
+            return "Student with Number: ${studentNo} does not exist in the system"
         } else if (courseAPI.courseExists(courseId) != null) {
-            return "Course with such an ID doesn't exist"
+            return "Course with such an ID: ${courseId} doesn't exist"
         } else {
             students[students.indexOf(student)] = student.copy(courseId = courseId)
             return "Student with Number ${studentNo} has been enrolled into the Course: ${courseId}"
+        }
+    }
+
+    fun removeStudentFromCourse(studentNo: Int, courseId: Int): String {
+        val student = students.find{it.studentNo == studentNo}
+        if (student == null) {
+            return "Student with such an ID doesn't exist in the system"
+        } else if (courseAPI.courseExists(courseId) == null) {
+            return "Course with such an ID doesn't exist in the system"
+        } else {
+            students[students.indexOf(student)] = student.copy(courseId = null)
+            return "Student with Number ${studentNo} has been removed from the CourseL ${courseId}"
+
         }
     }
 
@@ -145,11 +156,13 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         } else null
     }
 
-    private fun isValidListIndex(index: Int, list: List<Student>): Boolean {
-        return (index >= 0 && index < list.size)
+    fun isValidIndex(index: Int): Boolean {
+        return isValidListIndex(index, students)
     }
 
-    fun isValidIndex(index: Int): Boolean {
-        return isValidListIndex(index, students);
+    fun isValidListIndex(index: Int, list: List<Student>): Boolean {
+        return (index >= 0 && index < list.size)
     }
 }
+
+
