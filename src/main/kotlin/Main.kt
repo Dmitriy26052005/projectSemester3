@@ -2,8 +2,10 @@
 import controllers.courseAPI
 import controllers.studentAPI
 import io.github.oshai.kotlinlogging.KotlinLogging
+import models.Course
 import models.Student
 import persistence.JSONSerializer
+import utils.readNextChar
 import utils.readNextInt
 import utils.readNextLine
 import java.io.File
@@ -221,22 +223,48 @@ listAllStudents()
 fun addCourse() {
     val id = readNextInt("Please enter a Course ID")
     val courseName = readNextLine("Please enter the Course Name")
-    val isCourseOpen = readNextLine("Please enter the Student's Last Name")
-    val dob = readNextLine("Please enter the Student's Date of Birth")
-    val isAdded = studentAPI.add(Student(studentNo, fName, lName, dob, false, 0.0, 0))
+    val isCourseOpen = readNextLine("Yes or No")
+    val languageTaught = readNextChar("E for English  \nI for Irish  \n S for Spanish")
+    val isCreated = courseAPI.addCourse(Course(id, courseName, isCourseOpen, languageTaught))
 
-    if (isAdded) {
-        println("Student added to the system!")
+    if (isCreated != null) {
+        println("Course successfully added to the system!")
     }
 
     else {
         println("Unsuccessful")
     }
 }
-}
 
 fun totalNumberOfCourses() {
+    """${courseAPI.numberOfCourses()}
+    > Are in the system
+""".trimMargin(">")
+}
 
+fun listAllCourses() {
+println(courseAPI.getAllCourses())
+}
+
+fun updateCourseDetails() {
+    listAllCourses()
+    if(courseAPI.numberOfCourses() > 0) {
+        val indexToUpdate = readNextInt("Enter the index of a Course to edit: ")
+        if (courseAPI.isValidIndex(indexToUpdate)) {
+            val studentNo = readNextInt("Please enter a Student Number")
+            val fName = readNextLine("Please enter the Student's First Name")
+            val lName = readNextLine("Please enter the Student's Last Name")
+            val dob = readNextLine("Please enter the Student's Date of Birth")
+
+            if (studentAPI.updateStudent(indexToUpdate, Student(studentNo, fName, lName, dob, false, 0.0, 0))) {
+                println("Update Successfully Executed")
+            } else {
+                println("Update Failed")
+            }
+        } else {
+            println("There is no student under this index.")
+        }
+    }
 }
 
 fun addCourseToStudent() {
@@ -263,22 +291,6 @@ private fun askUserToChooseEnrolledStudent(): Student? {
         }
     }
     return null
-}
-
-fun listAllCourses() {
-
-}
-
-fun listCourseById() {
-
-}
-
-fun updateCourseDetails() {
-
-}
-
-fun closeCourse() {
-
 }
 
 fun save() {

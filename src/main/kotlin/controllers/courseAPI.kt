@@ -48,5 +48,11 @@ class courseAPI (serializerType: serializer) {
         }
         return false
     }
+    fun isValidIndex(index: Int): Boolean {
+        return isValidListIndex(index, courses)
+    }
 
+    fun isValidListIndex(index: Int, list: MutableList<Course>): Boolean {
+        return (index >= 0 && index < list.size)
+    }
 }

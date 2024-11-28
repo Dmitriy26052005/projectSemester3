@@ -158,12 +158,12 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         } else null
     }
 
-    private fun isValidListIndex(index: Int, list: List<Student>): Boolean {
-        return (index >= 0 && index < list.size)
+    fun isValidIndex(index: Int): Boolean {
+        return isValidListIndex(index, students)
     }
 
-    fun isValidIndex(index: Int): Boolean {
-        return isValidListIndex(index, students);
+    fun isValidListIndex(index: Int, list: List<Student>): Boolean {
+        return (index >= 0 && index < list.size)
     }
 }
 
