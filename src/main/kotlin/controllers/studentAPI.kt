@@ -4,7 +4,7 @@ import models.Student
 import persistence.serializer
 
 class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
-    private var students = ArrayList<Student>()
+    var students = ArrayList<Student>()
     private var serializer: serializer = serializerType
 
     @Throws(Exception::class)
@@ -125,7 +125,7 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         return false
     }
 
-    fun getStudentByCourseId(courseId: Int): List<Student> = students.filter {it.courseId == courseId}
+    fun getStudentsByCourseId(courseId: Int): List<Student> = students.filter {it.courseId == courseId}
 
     fun addStudentToCourse(studentNo: Int, courseId: Int): String {
         val student = students.find{it.studentNo == studentNo}
