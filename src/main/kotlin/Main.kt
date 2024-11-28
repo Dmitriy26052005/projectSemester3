@@ -32,16 +32,14 @@ fun mainMenu() : Int {
             > | 7) Delete a Student
             >
             >        Course Menu
-            > | 8) Create a course
-            > | 9) Enroll a student into a course
-            > | 10) List all open courses
-            > | 11) List course by ID
-            > | 12) Update course details
-            > | 13) Close a course
-            >
+            > | 8) Add Course to Student
+            > | 9) Update Course Contents for a Student
+            > | 10) Delete Course Contents for a Student
+            > | 11) Open / Close Course Status
+            > 
             > | 14) Save Details
             > | 15) Load Details
-            > 
+            >
             > | 16) Exit Application
         """.trimMargin(">"))
     return readNextInt("> --->")
@@ -59,15 +57,14 @@ fun runMenu() {
             7 -> updateStudentDetails()
             8 -> numberOfStudents()
             9 -> deleteStudent()
-            10 -> addCourse()
-            11 -> addStudentToCourse()
-            12 -> listAllCourses()
-            13 -> listCourseById()
-            14 -> updateCourseDetails()
-            15 -> closeCourse()
-            16 -> save()
-            17 -> load()
-            18 -> exit()
+            10 -> addCourseToStudent()
+            11 -> listAllCourses()
+            12 -> listCourseById()
+            13 -> updateCourseDetails()
+            14 -> closeCourse()
+            15 -> save()
+            16 -> load()
+            17 -> exit()
             else -> """Please enter a valid option:
                      ${option} is invalid.
           """.trimMargin()
@@ -215,12 +212,28 @@ listAllStudents()
     }
 }
 
-fun addCourse() {
+private fun addCourseToStudent() {
+    val student: Student? = askUserToChooseEnrolledStudent()
 
-}
 
-fun addStudentToCourse() {
+    }
 
+
+private fun askUserToChooseEnrolledStudent(): Student? {
+    listEnrolledStudents()
+    if (studentAPI.numberOfEnrolledStudents() > 0) {
+        val student = studentAPI.findStudent(readNextInt("Enter the Student number to search for: "))
+        if (student != null) {
+            if (!student.isEnrolled) {
+                println("Student is Not Enrolled")
+            } else {
+                return student
+            }
+        } else {
+            println("Student Number not in the System")
+        }
+    }
+    return null
 }
 
 fun listAllCourses() {
