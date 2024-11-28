@@ -198,11 +198,11 @@ listAllStudents()
     if(studentAPI.numberOfStudents() > 0) {
         val indexToUpdate = readNextInt("Enter the index of a student to edit: ")
         if (studentAPI.isValidIndex(indexToUpdate)) {
-            val studentNo = readNextInt("Please enter a Student Number")
-            val fName = readNextLine("Please enter the Student's First Name")
-            val lName = readNextLine("Please enter the Student's Last Name")
-            val dob = readNextLine("Please enter the Student's Date of Birth")
-            val courseHours = readNextDouble("Please enter the amount of hours the student will attend")
+            val studentNo = readNextInt("Please enter a Student Number: ")
+            val fName = readNextLine("Please enter the Student's First Name: ")
+            val lName = readNextLine("Please enter the Student's Last Name: ")
+            val dob = readNextLine("Please enter the Student's Date of Birth: ")
+            val courseHours = readNextDouble("Please enter the amount of hours the student will attend: ")
 
             if (studentAPI.updateStudent(indexToUpdate, Student(studentNo, fName, lName, dob, false, courseHours, 0))) {
                 println("Update Successfully Executed")
