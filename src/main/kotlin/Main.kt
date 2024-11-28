@@ -184,7 +184,7 @@ listAllStudents()
             val lName = readNextLine("Please enter the Student's Last Name")
             val dob = readNextLine("Please enter the Student's Date of Birth")
 
-            if (studentAPI.updateStudent(indexToUpdate, Student(studentNo, fName, lName, dob, false, 0.0))) {
+            if (studentAPI.updateStudent(indexToUpdate, Student(studentNo, fName, lName, dob, false, 0.0, 0))) {
                 println("Update Successfully Executed")
             } else {
                 println("Update Failed")

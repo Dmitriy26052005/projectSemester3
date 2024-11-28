@@ -250,10 +250,10 @@ class studentAPITest {
 
         @Test
         fun `savning and loading an empty collection in JSON doesn't crash app`() {
-            val savingStudents = studentAPI(JSONSerializer(File("students.json")))
+            val savingStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             savingStudents.store()
 
-            val loadedStudents = studentAPI(JSONSerializer(File("students.json")))
+            val loadedStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             loadedStudents.load()
 
             assertEquals(0, savingStudents.numberOfStudents())
@@ -263,14 +263,14 @@ class studentAPITest {
 
         @Test
         fun `saving and loading a koaded collection in JSON doesnt't lose data`() {
-            val savingStudents = studentAPI(JSONSerializer(File("students.json")))
+            val savingStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             savingStudents.add(firstYearStudent!!)
             savingStudents.add(secondYearStudent!!)
             savingStudents.add(thirdYearStudent!!)
             savingStudents.add(mastersStudent!!)
             savingStudents.store()
 
-            val loadedStudents = studentAPI(JSONSerializer(File("students.json")))
+            val loadedStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             loadedStudents.load()
 
             assertEquals(4, savingStudents.numberOfStudents())
