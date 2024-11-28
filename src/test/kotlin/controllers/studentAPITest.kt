@@ -16,16 +16,20 @@ class studentAPITest {
     private var thirdYearStudent: Student? = null
     private var fourthYearStudent: Student? = null
     private var mastersStudent: Student? = null
-    private var filledStudent: studentAPI? = studentAPI(JSONSerializer(File("students.json")))
-    private var noStudents: studentAPI? = studentAPI(JSONSerializer(File("clear-students.json")))
+    private val serializer1 = JSONSerializer(File("students.json"))
+    private val serializer2 = JSONSerializer(File("clear-students.json"))
+    private val serializer3 = JSONSerializer(File("course.json"))
+    private val courseAPI = courseAPI(serializer3)
+    private var filledStudent: studentAPI? = studentAPI(serializer1, courseAPI)
+    private var noStudents: studentAPI? = studentAPI(serializer2, courseAPI)
 
     @BeforeEach
     fun setup() {
-        firstYearStudent = Student(1, "John", "Doe", "01/02/2002", true, 26.00)
-        secondYearStudent = Student(2, "Jake", "Dune", "24/03/2001", true, 26.50)
-        thirdYearStudent = Student(3, "Jacob", "Dan", "31/05/2000", true, 25.00)
-        fourthYearStudent = Student(4, "Joanne", "Dooly", "03/11/2004", false, 30.00)
-        mastersStudent = Student(5, "Jett", "Dett", "05/08/2003", false,  35.00)
+        firstYearStudent = Student(1, "John", "Doe", "01/02/2002", true, 26.00, 12)
+        secondYearStudent = Student(2, "Jake", "Dune", "24/03/2001", true, 26.50, 13)
+        thirdYearStudent = Student(3, "Jacob", "Dan", "31/05/2000", true, 25.00, 14)
+        fourthYearStudent = Student(4, "Joanne", "Dooly", "03/11/2004", false, 30.00, 15)
+        mastersStudent = Student(5, "Jett", "Dett", "05/08/2003", false,  35.00, 16)
 
         filledStudent!!.add(firstYearStudent!!)
         filledStudent!!.add(secondYearStudent!!)
@@ -49,7 +53,7 @@ class studentAPITest {
     inner class AddStudents {
         @Test
         fun `adding a student to a filled list of students, to an ArrayList`() {
-            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00)
+            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00, 30)
             assertEquals(5, filledStudent!!.numberOfStudents())
             assertTrue(filledStudent!!.add(newStudent))
             assertEquals(6, filledStudent!!.numberOfStudents())
@@ -58,7 +62,7 @@ class studentAPITest {
 
         @Test
         fun `adding a Student to a clear list of students, adds to an ArrayList`() {
-            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00)
+            val newStudent = Student(10, "Jason", "Jr", "01/05/2024", false, 24.00, 30)
             assertEquals(0, noStudents!!.numberOfStudents())
             assertTrue(noStudents!!.add(newStudent))
             assertEquals(1, noStudents!!.numberOfStudents())
@@ -190,16 +194,16 @@ class studentAPITest {
             assertFalse(
                 filledStudent!!.updateStudent(
                     7,
-                    Student(443, "Jamie", "Johnson", "23/04/2001", true, 30.00)
+                    Student(443, "Jamie", "Johnson", "23/04/2001", true, 30.00, 22)
                 )
             )
             assertFalse(
                 filledStudent!!.updateStudent(
                     -1,
-                    Student(222, "Jordan", "Peele", "22/0/1/2015", false,  20.00)
+                    Student(222, "Jordan", "Peele", "22/0/1/2015", false,  20.00, 10)
                 )
             )
-            assertFalse(noStudents!!.updateStudent(0, Student(10, "JB", "Keene", "14/06/2000", false, 30.00)))
+            assertFalse(noStudents!!.updateStudent(0, Student(10, "JB", "Keene", "14/06/2000", false, 30.00, 22)))
         }
 
         @Test
@@ -213,7 +217,7 @@ class studentAPITest {
             assertTrue(
                 filledStudent!!.updateStudent(
                     3,
-                    Student(33, "Jakob", "Daniels", "31/05/1999", true, 26.50)
+                    Student(33, "Jakob", "Daniels", "31/05/1999", true, 26.50, 14)
                 )
             )
             assertEquals("Jakob", filledStudent!!.findStudent(3)!!.firstName)

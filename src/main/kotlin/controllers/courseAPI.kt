@@ -1,10 +1,9 @@
 package controllers
 
 import models.Course
-import models.Student
 import persistence.serializer
 
-class courseAPI (serializerType: serializer, private val studentAPI: studentAPI) {
+class courseAPI (serializerType: serializer) {
 
     private var courses = mutableListOf<Course>()
     private var serializer: serializer = serializerType
@@ -31,16 +30,9 @@ class courseAPI (serializerType: serializer, private val studentAPI: studentAPI)
 
     fun numberOfCourses() = courses.size
 
-    fun findStudentInCourse(id: Int): Student? {
-        return studentAPI.students.find { student -> student.studentNo == id }
-    }
 
     fun findCourseById(id: Int): Course? {
         return courses.find { it.id == id }
-    }
-
-    fun deleteStudentFromCourse(id: Int): Boolean {
-        return studentAPI.students.removeIf { student -> student.studentNo == id }
     }
 
     fun updateCourse(id: Int, newCourse: Course): Boolean {

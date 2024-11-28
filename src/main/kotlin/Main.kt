@@ -10,9 +10,10 @@ import java.io.File
 
 private val logger = KotlinLogging.logger{}
 //private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
-private val studentAPI = studentAPI(JSONSerializer(File("students.json")))
-//declaration of global variables which exist in main.
 private val courseAPI = courseAPI(JSONSerializer(File("course.json")))
+private val studentAPI = studentAPI(JSONSerializer(File("students.json")), courseAPI)
+//declaration of global variables which exist in main.
+
 
 fun main() {
     runMenu()
@@ -76,7 +77,7 @@ fun addStudent() {
     val fName = readNextLine("Please enter the Student's First Name")
     val lName = readNextLine("Please enter the Student's Last Name")
     val dob = readNextLine("Please enter the Student's Date of Birth")
-    val isAdded = studentAPI.add(Student(studentNo, fName, lName, dob, false, 0.0))
+    val isAdded = studentAPI.add(Student(studentNo, fName, lName, dob, false, 0.0, 0))
 
     if (isAdded) {
         println("Student added to the system!")
