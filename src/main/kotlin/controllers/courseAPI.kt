@@ -18,7 +18,7 @@ class courseAPI (serializerType: serializer) {
         serializer.write(courses)
     }
 
-    fun addCourse(course: Course){
+    fun add(course: Course){
         courses.add(course)
     }
 
@@ -30,13 +30,15 @@ class courseAPI (serializerType: serializer) {
 
     fun numberOfCourses() = courses.size
 
-
-    fun findCourseById(id: Int): Course? {
-        return courses.find { it.id == id }
+    fun findCourse(index: Int): Course? {
+        return if (isValidListIndex(index, courses)) {
+            courses[index]
+        } else null
     }
 
+
     fun updateCourse(id: Int, newCourse: Course): Boolean {
-        val foundCourse = findCourseById(id)
+        val foundCourse = findCourse(id)
 
         if (foundCourse != null) {
             foundCourse.id = newCourse.id

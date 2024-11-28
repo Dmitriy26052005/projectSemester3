@@ -125,8 +125,6 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         return false
     }
 
-    fun getStudentsByCourseId(courseId: Int): List<Student> = students.filter {it.courseId == courseId}
-
     fun addStudentToCourse(studentNo: Int, courseId: Int): String {
         val student = students.find{it.studentNo == studentNo}
         if (student == null) {
@@ -143,7 +141,7 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         val student = students.find{it.studentNo == studentNo}
         if (student == null) {
             return "Student with such an ID doesn't exist in the system"
-        } else if (courseAPI.courseExists(courseId) != null) {
+        } else if (courseAPI.courseExists(courseId) == null) {
             return "Course with such an ID doesn't exist in the system"
         } else {
             students[students.indexOf(student)] = student.copy(courseId = null)

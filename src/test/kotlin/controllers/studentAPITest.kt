@@ -10,7 +10,7 @@ import persistence.JSONSerializer
 import java.io.File
 import kotlin.test.assertFalse
 
-class studentAPITest {
+class StudentAPITest {
     private var firstYearStudent: Student? = null
     private var secondYearStudent: Student? = null
     private var thirdYearStudent: Student? = null
@@ -71,7 +71,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class listStudents {
+    inner class ListStudents {
         @Test
         fun `listAllStudents returns No Students stored message when ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfStudents())
@@ -91,7 +91,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class listEnrolledStudents {
+    inner class ListEnrolledStudents {
         @Test
         fun `listEnrolledStudents returns no enrolled students when ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfEnrolledStudents())
@@ -128,7 +128,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class listStudentByName {
+    inner class ListStudentByName {
         @Test
         fun `listStudentsByName returns no students when an ArrayList is empty`() {
             assertEquals(0, noStudents!!.numberOfStudents())
@@ -156,7 +156,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class listStudentByNumber {
+    inner class ListStudentByNumber {
 
         @Test
         fun `listStudentByNumber returns no students when an ArrayList is empty`() {
@@ -187,7 +187,7 @@ class studentAPITest {
 
 
     @Nested
-    inner class updateStudent {
+    inner class UpdateStudent {
 
         @Test
         fun `updating a student that doesn't exist returns a false result`() {
@@ -227,7 +227,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class deleteStudent
+    inner class DeleteStudent
 
     @Test
     fun `deleting a student that doesn't exist, returns null`() {
@@ -308,7 +308,7 @@ class studentAPITest {
     }
 
     @Nested
-    inner class disenrollStudents
+    inner class DisenrollStudents
 
     @Test
     fun `disenrolling a student that does not exist returns false`() {
