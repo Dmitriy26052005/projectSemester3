@@ -248,7 +248,7 @@ fun totalNumberOfCourses() {
 }
 
 fun listAllCourses() {
-println(courseAPI.getAllCourses())
+println(courseAPI.listAllCourses())
 }
 
 fun updateCourseDetails() {

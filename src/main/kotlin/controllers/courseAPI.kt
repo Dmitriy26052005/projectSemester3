@@ -18,11 +18,16 @@ class courseAPI (serializerType: serializer) {
         serializer.write(courses)
     }
 
-    fun add(course: Course){
-        courses.add(course)
+    fun add(course: Course): Boolean {
+       return courses.add(course)
     }
 
-    fun getAllCourses(): List<Course> = courses
+    fun listAllCourses(): String =
+        if (courses.isEmpty()) "No students in the system"
+        else courses.joinToString(separator = "\n") { Course ->
+            courses.indexOf(Course).toString() + ": " + Course.toString()
+
+        }
 
     fun courseExists(courseId: Int): Course? {
         return courses.find {it -> it.id == courseId}

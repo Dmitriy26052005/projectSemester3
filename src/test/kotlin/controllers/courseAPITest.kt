@@ -3,12 +3,12 @@ package controllers
 import models.Course
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import persistence.JSONSerializer
 import java.io.File
-import kotlin.test.assertTrue
 
 class CourseAPITest {
     private var firstCourse: Course? = null
@@ -49,5 +49,23 @@ class CourseAPITest {
     @Nested
     inner class AddCourses {
         @Test
-        fun `test adding a course`() {
+        fun `adding a course to a filled list of courses, to an ArrayList`() {
+            val newCourse = Course(10, "Chemistry", "Open", 'E')
+            assertEquals(5, filledCourse!!.numberOfCourses())
+            assertTrue(filledCourse!!.add(newCourse))
+            assertEquals(6, filledCourse!!.numberOfCourses())
+            assertEquals(newCourse, filledCourse!!.findCourse(filledCourse!!.numberOfCourses() - 1))
+        }
+
+        @Test
+        fun `adding a Course to a clear list of courses, adds to an ArrayList`() {
+            val newCourse = Course(10, "Chemistry", "Open", 'E')
+            assertEquals(0, noCourse!!.numberOfCourses())
+            assertTrue(noCourse!!.add(newCourse))
+            assertEquals(1, noCourse!!.numberOfCourses())
+            assertEquals(newCourse, noCourse!!.findCourse(noCourse!!.numberOfCourses() - 1))
+        }
+    }
 }
+
+
