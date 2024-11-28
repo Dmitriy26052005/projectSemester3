@@ -23,7 +23,7 @@ class courseAPI (serializerType: serializer) {
     }
 
     fun listAllCourses(): String =
-        if (courses.isEmpty()) "No students in the system"
+        if (courses.isEmpty()) "No courses in the system"
         else courses.joinToString(separator = "\n") { Course ->
             courses.indexOf(Course).toString() + ": " + Course.toString()
 
