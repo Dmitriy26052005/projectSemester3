@@ -3,7 +3,7 @@ package models
 data class Course(
     var id: Int,
     var courseName: String,
-    var isCourseOpen: Boolean = false,
+    var isCourseOpen: String,
     var languageTaught: Char)
 /*{
 

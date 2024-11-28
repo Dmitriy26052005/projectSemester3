@@ -218,12 +218,35 @@ listAllStudents()
     }
 }
 
-private fun addCourseToStudent() {
-    val student: Student? = askUserToChooseEnrolledStudent()
+fun addCourse() {
+    val id = readNextInt("Please enter a Course ID")
+    val courseName = readNextLine("Please enter the Course Name")
+    val isCourseOpen = readNextLine("Please enter the Student's Last Name")
+    val dob = readNextLine("Please enter the Student's Date of Birth")
+    val isAdded = studentAPI.add(Student(studentNo, fName, lName, dob, false, 0.0, 0))
 
-
+    if (isAdded) {
+        println("Student added to the system!")
     }
 
+    else {
+        println("Unsuccessful")
+    }
+}
+}
+
+fun totalNumberOfCourses() {
+
+}
+
+fun addCourseToStudent() {
+    val student: Student? = askUserToChooseEnrolledStudent()
+
+}
+
+fun removeCourseForStudent() {
+
+}
 
 private fun askUserToChooseEnrolledStudent(): Student? {
     listEnrolledStudents()
