@@ -23,25 +23,30 @@ fun mainMenu() : Int {
     print(
         """
             >      Student Menu
-            > | 
-            > | 1) Add a Student
-            > | 2) List all Students
-            > | 3) List Students by Name
-            > | 4) List Students by Student Number
-            > | 5) Update Student Details
-            > | 6) Total Number of Students 
-            > | 7) Delete a Student
-            >
-            >        Course Menu
-            > | 8) Add Course to Student
-            > | 9) Update Course Contents for a Student
-            > | 10) Delete Course Contents for a Student
-            > | 11) Open / Close Course Status
+            > |  
+            > | 1) Add Student to the System
+            > | 2) List Student by Enrolled Status
+            > | 3) List Student By Name
+            > | 4) List Student By Student Number Specified
+            > | 5) Enroll an Existing Student
+            > | 6) Disenroll an Enrolled Student
+            > | 7) Update Student Details by Specifying their Number
+            > | 8) Show the total number of students
+            > | 9) Delete a Student from the system
             > 
-            > | 14) Save Details
-            > | 15) Load Details
-            >
-            > | 16) Exit Application
+            >       Course Menu
+            >  
+            > | 10) Add Course to the System
+            > | 11) List All Courses
+            > | 12) Show Total Number Of Courses
+            > | 13) Update a Course Contents
+            > | 14) Add a Student to a Course
+            > | 15) Remove a Student from a Course
+            > 
+            > | 16) Save Details
+            > | 17) Load Details
+            > 
+            > | 18) Exit Application
         """.trimMargin(">"))
     return readNextInt("> --->")
 }
@@ -58,14 +63,15 @@ fun runMenu() {
             7 -> updateStudentDetails()
             8 -> numberOfStudents()
             9 -> deleteStudent()
-            10 -> addCourseToStudent()
+            10 -> addCourse()
             11 -> listAllCourses()
-            12 -> listCourseById()
+            12 -> totalNumberOfCourses()
             13 -> updateCourseDetails()
-            14 -> closeCourse()
-            15 -> save()
-            16 -> load()
-            17 -> exit()
+            14 -> addCourseToStudent()
+            15 -> removeCourseForStudent()
+            16 -> save()
+            17 -> load()
+            18 -> exit()
             else -> """Please enter a valid option:
                      ${option} is invalid.
           """.trimMargin()
@@ -172,7 +178,6 @@ fun disenrollStudent() {
         }
     }
 }
-
 
 fun updateStudentDetails() {
 listAllStudents()
