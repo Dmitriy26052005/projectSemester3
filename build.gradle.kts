@@ -1,5 +1,8 @@
 plugins {
-    kotlin("jvm") version "2.0.20"
+
+    kotlin("jvm") version "2.0.10"
+    id("org.jetbrains.dokka") version "1.9.20"
+    application
 }
 
 group = "ie.setu"
@@ -17,6 +20,7 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.1.0-alpha1")
     implementation("com.thoughtworks.xstream:xstream:1.4.18")
     implementation("org.codehaus.jettison:jettison:1.4.1")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
 }
 
 tasks.test {
