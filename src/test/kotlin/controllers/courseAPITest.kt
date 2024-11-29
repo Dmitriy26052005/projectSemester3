@@ -127,6 +127,45 @@ class CourseAPITest {
         assertEquals("Closed", filledCourse!!.findCourse(3)!!.isCourseOpen)
         assertEquals('E', filledCourse!!.findCourse(3)!!.languageTaught)
     }
+
+    @Nested
+    inner class PersistenceTests {
+
+        @Test
+        fun `saving and loading an empty collection in JSON doesn't crash app`() {
+            val savingCourses = courseAPI(JSONSerializer(File("courses.json")))
+            savingCourses.store()
+
+            val loadedCourses = courseAPI(JSONSerializer(File("courses.json")))
+            loadedCourses.load()
+
+            assertEquals(0, savingCourses.numberOfCourses())
+            assertEquals(0, loadedCourses.numberOfCourses())
+            assertEquals(savingCourses.numberOfCourses(), loadedCourses.numberOfCourses())
+        }
+
+        @Test
+        fun `saving and loading a loaded collection in JSON doesn't lose data`() {
+            val savingCourses = courseAPI(JSONSerializer(File("courses.json")))
+            savingCourses.add(firstCourse!!)
+            savingCourses.add(secondCourse!!)
+            savingCourses.add(thirdCourse!!)
+            savingCourses.add(fourthCourse!!)
+            savingCourses.store()
+
+            val loadedCourses = courseAPI(JSONSerializer(File("courses.json")))
+            loadedCourses.load()
+
+            assertEquals(4, savingCourses.numberOfCourses())
+            assertEquals(4, loadedCourses.numberOfCourses())
+            assertEquals(savingCourses.numberOfCourses(), loadedCourses.numberOfCourses())
+            assertEquals(savingCourses.findCourse(0), loadedCourses.findCourse(0))
+            assertEquals(savingCourses.findCourse(1), loadedCourses.findCourse(1))
+            assertEquals(savingCourses.findCourse(2), loadedCourses.findCourse(2))
+            assertEquals(savingCourses.findCourse(3), loadedCourses.findCourse(3))
+
+        }
+    }
 }
 
 

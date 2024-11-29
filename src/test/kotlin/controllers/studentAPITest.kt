@@ -249,7 +249,7 @@ class StudentAPITest {
     inner class PersistenceTests {
 
         @Test
-        fun `savning and loading an empty collection in JSON doesn't crash app`() {
+        fun `saving and loading an empty collection in JSON doesn't crash app`() {
             val savingStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             savingStudents.store()
 
@@ -262,7 +262,7 @@ class StudentAPITest {
         }
 
         @Test
-        fun `saving and loading a koaded collection in JSON doesnt't lose data`() {
+        fun `saving and loading a loaded collection in JSON doesn't lose data`() {
             val savingStudents = studentAPI(JSONSerializer(File("students.json")), courseAPI)
             savingStudents.add(firstYearStudent!!)
             savingStudents.add(secondYearStudent!!)
