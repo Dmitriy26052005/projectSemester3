@@ -3,19 +3,25 @@ package controllers
 import models.Student
 import persistence.serializer
 
+/**
+ * This class manages an ArrayList of student objects, and provides standard Create Read Update Delete functionality,
+ * and other useful methods. It uses [Serializer] to load anf save the students persistently.
+ *
+ * @property serializer A serializer instance for reading and creating the students.
+ * @constructor Initializes the studentAPI with the specified [serializerType], which is JSON
+ */
+
+
 class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
     var students = ArrayList<Student>()
     private var serializer: serializer = serializerType
 
-    @Throws(Exception::class)
-    fun load() {
-        students = serializer.read() as ArrayList<Student>
-    }
-
-    @Throws(Exception::class)
-    fun store() {
-        serializer.write(students)
-    }
+    /**
+     * Adds a new Student to the ArrayList
+     *
+     * @param student the [Student] to be added
+     * @return 'true' if the student was successfully added, 'false' otherwise.
+     */
 
     fun add(student: Student): Boolean {
         return students.add(student)
@@ -129,7 +135,7 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         val student = students.find{it.studentNo == studentNo}
         if (student == null) {
             return "Student with Number: ${studentNo} does not exist in the system"
-        } else if (courseAPI.courseExists(courseId) != null) {
+        } else if (courseAPI.courseExists(courseId) == null) {
             return "Course with such an ID: ${courseId} doesn't exist"
         } else {
             students[students.indexOf(student)] = student.copy(courseId = courseId)
@@ -163,6 +169,17 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
     fun isValidListIndex(index: Int, list: List<Student>): Boolean {
         return (index >= 0 && index < list.size)
     }
+
+    @Throws(Exception::class)
+    fun load() {
+        students = serializer.read() as ArrayList<Student>
+    }
+
+    @Throws(Exception::class)
+    fun store() {
+        serializer.write(students)
+    }
+
 }
 
 
