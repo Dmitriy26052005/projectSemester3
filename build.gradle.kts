@@ -1,7 +1,9 @@
 plugins {
 
-    kotlin("jvm") version "2.0.10"
-    id("org.jetbrains.dokka") version "1.9.20"
+    kotlin("jvm") version "1.7.10"
+    id("org.jetbrains.dokka") version "1.6.10"
+    jacoco
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     application
 }
 
@@ -25,6 +27,7 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
 }
 kotlin {
     jvmToolchain(16)
