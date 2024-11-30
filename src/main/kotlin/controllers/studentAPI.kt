@@ -27,6 +27,10 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         return students.add(student)
     }
 
+    /** Listing Students methods
+     * @param students, the students ArrayList is used for operations
+     * @return String outputs.
+     */
     fun listAllStudents(): String =
         if (students.isEmpty()) "No students in the system"
         else students.joinToString(separator = "\n") { Student ->
@@ -79,6 +83,9 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         }
     }
 
+    /**
+     * Shows the amount of students currently in the system, with specified attribute values
+     */
     fun numberOfEnrolledStudents(): Int = students.count { it.isEnrolled }
 
     fun numberOfNotEnrolledStudents(): Int = students.count { !it.isEnrolled }
@@ -87,6 +94,11 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         return students.size
     }
 
+    /**
+     * Update the student details
+     * @param indexToUpdate, you choose which student to update
+     * @return 'true' if the update worked, otherwise 'false'
+     */
     fun updateStudent(indexToUpdate: Int, Student: Student?): Boolean {
 
         val foundStudent = findStudent(indexToUpdate)
@@ -103,12 +115,22 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         return false
     }
 
+    /**
+     * function used in other methods to find students
+     * @param index, enter the student to find according to their index
+     */
     fun findStudent(index: Int): Student? {
         return if (isValidListIndex(index, students)) {
             students[index]
         } else null
     }
 
+    /**
+     * Enroll / Disenroll students from the system
+     * @param indexToEnroll, you choose the student to enroll
+     * @param indexToDisenroll, you choose the student to dieenroll
+     * @return 'true' if the operation was successful, 'false' otherwise
+     */
     fun enrollStudent(indexToEnroll: Int): Boolean {
         if (isValidIndex(indexToEnroll)) {
             val studentToEnroll = students[indexToEnroll]
@@ -131,6 +153,12 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         return false
     }
 
+    /**
+     * Control the relationship between the models
+     * @param studentno, you choose the student to add
+     * @param courseId, you choose the course to enroll the student into
+     * @return Success or Failed message, after the execution of the operation.
+     */
     fun addStudentToCourse(studentNo: Int, courseId: Int): String {
         val student = students.find{it.studentNo == studentNo}
         if (student == null) {
@@ -156,6 +184,11 @@ class studentAPI(serializerType: serializer, private val courseAPI: courseAPI) {
         }
     }
 
+    /**
+     * Delete student from the system
+     * @param, choose the student to delete
+     * @return message if the operation worked or not.
+     */
     fun deleteStudent(indexToDelete: Int): Student? {
         return if (isValidListIndex(indexToDelete, students)) {
             students.removeAt(indexToDelete)

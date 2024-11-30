@@ -3,6 +3,14 @@ package controllers
 import models.Course
 import persistence.serializer
 
+/**
+ * This class manages an ArrayList of course objects, and provides standard Create Read Update Delete functionality,
+ * and other useful methods. It uses [Serializer] to load anf save the students persistently.
+ *
+ * @property serializer A serializer instance for reading and creating the students.
+ * @constructor Initializes the studentAPI with the specified [serializerType], which is JSON
+ */
+
 class courseAPI (serializerType: serializer) {
 
     private var courses = mutableListOf<Course>()
