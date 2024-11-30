@@ -2,9 +2,12 @@ The Project for Semester 3 of college in Software Systems Development @ SETU.
 
 The goals for this project were massive, and multiple. It uses Kotlin as the main programming language. 
 It is similar to Java, however a lot more functional, and the syntax is different. To add to that, IntelliJ was used for this job.
+The main objective of the project, is to create students, and courses, and to enroll students onto them; a lot easier said than done!
+The project was created with the perspective of a school or university trying to maintain all the student and course data. As a result, the system is useful in managing that task.
+The user interface brings the user to the menu, and from there, you can create courses and students at a parallel rate, and link them together afterwards. 
 Persistence is also added to the system, so the user doesn't constantly need to create student and course objects.  
 During the semester, code was refactored to improve readability and the quality of the code itself. 
-The software package, contained multiple features I never knew existed in industry. It's only the tip of the iceberg, as far as tools go.
+The software package contained multiple features I never knew existed in industry. It's only the tip of the iceberg, as far as tools go.
 JUnit tests were written, different models were created for the program to function, and a relationship was formed as well; one-to-many between course and student.
 
 I also started to use different gradle tasks, already implemented in Intellij, for it to form different documentaion, and even generate websites for the methods implemented in the project; very cool!
